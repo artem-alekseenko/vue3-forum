@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "exclude": ["node_modules", "dist", ".yarn"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
