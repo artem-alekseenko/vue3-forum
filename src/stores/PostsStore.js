@@ -9,6 +9,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
 
   const getPostById = (id) => posts.find((post) => post.id === id);
   const getPostsByThreadId = (threadId) => posts.filter((post) => post.threadId === threadId);
+  const getPostsByUserId = (userId) => posts.filter((post) => post.userId === userId);
 
   const appendPostToThread = ({ postId, threadId }) => {
     const threadsStore = useThreadsStore();
@@ -44,6 +45,6 @@ export const usePostsStore = defineStore('PostsStore', () => {
   };
 
   return {
-    posts, getPostById, getPostsByThreadId, setPost, appendPostToThread,
+    posts, getPostById, getPostsByThreadId, setPost, appendPostToThread, getPostsByUserId,
   };
 });
