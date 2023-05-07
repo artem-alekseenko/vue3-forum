@@ -780,28 +780,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base-vue3-vite@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "base-vue3-vite@workspace:."
-  dependencies:
-    "@playwright/test": 1.33.0
-    "@vitejs/plugin-vue": 4.2.1
-    "@vue/test-utils": 2.3.2
-    eslint: ^8.40.0
-    eslint-config-airbnb: ^19.0.4
-    eslint-config-airbnb-base: ^15.0.0
-    eslint-import-resolver-alias: ^1.1.2
-    eslint-plugin-import: ^2.27.5
-    eslint-plugin-vue: ^9.11.0
-    jsdom: 22.0.0
-    pinia: 2.0.35
-    vite: 4.3.5
-    vitest: 0.31.0
-    vue: 3.2.47
-    vue-router: 4.1.6
-  languageName: unknown
-  linkType: soft
-
 "blueimp-md5@npm:^2.10.0":
   version: 2.19.0
   resolution: "blueimp-md5@npm:2.19.0"
@@ -1072,6 +1050,13 @@ __metadata:
   dependencies:
     time-zone: ^1.0.0
   checksum: f9cfcd1b15dfeabab15c0b9d18eb9e4e2d9d4371713564178d46a8f91ad577a290b5178b80050718d02d9c0cf646f8a875011e12d1ed05871e9f72c72c8a8fe6
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:1.11.7":
+  version: 1.11.7
+  resolution: "dayjs@npm:1.11.7"
+  checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
   languageName: node
   linkType: hard
 
@@ -1400,23 +1385,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-airbnb@npm:^19.0.4":
-  version: 19.0.4
-  resolution: "eslint-config-airbnb@npm:19.0.4"
-  dependencies:
-    eslint-config-airbnb-base: ^15.0.0
-    object.assign: ^4.1.2
-    object.entries: ^1.1.5
-  peerDependencies:
-    eslint: ^7.32.0 || ^8.2.0
-    eslint-plugin-import: ^2.25.3
-    eslint-plugin-jsx-a11y: ^6.5.1
-    eslint-plugin-react: ^7.28.0
-    eslint-plugin-react-hooks: ^4.3.0
-  checksum: 253178689c3c80eef2567e3aaf0612e18973bc9cf51d9be36074b5dd58210e8b6942200a424bcccbb81ac884e41303479ab09f251a2a97addc2de61efdc9576c
-  languageName: node
-  linkType: hard
-
 "eslint-import-resolver-alias@npm:^1.1.2":
   version: 1.1.2
   resolution: "eslint-import-resolver-alias@npm:1.1.2"
@@ -1700,6 +1668,28 @@ __metadata:
   checksum: 01135bf8675f9d5c61ff18e2e2932f719ca4de964e3be90ef4c36aacfc7b9cb2fceb5eca0b7e0190e3383fe51c5b37f4cb80b62ca06a99aaabfcfd6ac7c9328c
   languageName: node
   linkType: hard
+
+"forum-vue3@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "forum-vue3@workspace:."
+  dependencies:
+    "@playwright/test": 1.33.0
+    "@vitejs/plugin-vue": 4.2.1
+    "@vue/test-utils": 2.3.2
+    dayjs: 1.11.7
+    eslint: ^8.40.0
+    eslint-config-airbnb-base: ^15.0.0
+    eslint-import-resolver-alias: ^1.1.2
+    eslint-plugin-import: ^2.27.5
+    eslint-plugin-vue: ^9.11.0
+    jsdom: 22.0.0
+    pinia: 2.0.35
+    vite: 4.3.5
+    vitest: 0.31.0
+    vue: 3.2.47
+    vue-router: 4.1.6
+  languageName: unknown
+  linkType: soft
 
 "fs-minipass@npm:^2.0.0, fs-minipass@npm:^2.1.0":
   version: 2.1.0
