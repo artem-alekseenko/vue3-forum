@@ -1,11 +1,6 @@
 <script setup>
 import { useUsersStore } from '@/stores/UsersStore';
-import dayjs from 'dayjs/esm';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import localizedDate from 'dayjs/plugin/localizedFormat';
-
-dayjs.extend(relativeTime);
-dayjs.extend(localizedDate);
+import AppDate from '@/components/AppDate.vue';
 
 const props = defineProps({
   posts: {
@@ -16,9 +11,6 @@ const props = defineProps({
 
 const usersStore = useUsersStore();
 const userById = (userId) => usersStore.getUserById(userId);
-
-const diffForHumans = (timestamp) => dayjs.unix(timestamp).fromNow();
-const humanFriendlyDate = (timestamp) => dayjs.unix(timestamp).format('llll');
 </script>
 
 <template>
@@ -47,8 +39,8 @@ const humanFriendlyDate = (timestamp) => dayjs.unix(timestamp).format('llll');
         </div>
       </div>
 
-      <div class="post-date text-faded" :title="humanFriendlyDate(post.publishedAt)">
-        {{ diffForHumans(post.publishedAt) }}
+      <div class="post-date text-faded">
+        <AppDate :timestamp="post.publishedAt" />
       </div>
 
     </div>
