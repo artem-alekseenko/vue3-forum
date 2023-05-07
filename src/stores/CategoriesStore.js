@@ -5,5 +5,7 @@ import sourceData from '@/data.json';
 export const useCategoriesStore = defineStore('CategoriesStore', () => {
   const categories = reactive(sourceData.categories);
 
-  return { categories };
+  const getCategoryById = (id) => categories.find((category) => category.id === id);
+
+  return { categories, getCategoryById };
 });

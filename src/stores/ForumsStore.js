@@ -7,5 +7,7 @@ export const useForumsStore = defineStore('ForumsStore', () => {
 
   const getForumById = (id) => forums.find((forum) => forum.id === id);
 
-  return { forums, getForumById };
+  const getForumsByCategoryId = (id) => forums.filter((forum) => forum.categoryId === id);
+
+  return { forums, getForumById, getForumsByCategoryId };
 });

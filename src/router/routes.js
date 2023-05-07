@@ -8,6 +8,12 @@ export const routes = [
     component: HomePage,
   },
   {
+    path: '/category/:id',
+    name: 'Category',
+    component: () => import('@/views/CategoryPage.vue'),
+    props: true,
+  },
+  {
     path: '/forum/:id',
     name: 'Forum',
     component: () => import('@/views/ForumPage.vue'),

@@ -1,14 +1,14 @@
 <script setup>
-import ForumList from '@/components/ForumList.vue';
-import { useForumsStore } from '@/stores/ForumsStore';
+import { useCategoriesStore } from '@/stores/CategoriesStore';
+import CategoryList from '@/components/CategoryList.vue';
 
-const forumsStore = useForumsStore();
-const { forums } = forumsStore;
+const categoriesStore = useCategoriesStore();
+const { categories } = categoriesStore;
 </script>
 
 <template>
     <h1>Welcome to the Forum</h1>
-    <ForumList :forums="forums"/>
+    <CategoryList :categories="categories"/>
 </template>
 
 <style scoped>
