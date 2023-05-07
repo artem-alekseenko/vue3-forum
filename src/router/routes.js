@@ -12,4 +12,9 @@ export const routes = [
     component: () => import('@/views/ThreadShowPage.vue'),
     props: true,
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/views/NotFoundPage.vue'),
+  },
 ];

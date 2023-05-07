@@ -1,6 +1,4 @@
 <script setup>
-import { reactive } from 'vue';
-import sourceData from '@/data.json';
 import { useUsersStore } from '@/stores/UsersStore';
 
 const props = defineProps({
