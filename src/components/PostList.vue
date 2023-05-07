@@ -1,6 +1,5 @@
 <script setup>
 import { useUsersStore } from '@/stores/UsersStore';
-import AppDate from '@/components/AppDate.vue';
 
 const props = defineProps({
   posts: {
