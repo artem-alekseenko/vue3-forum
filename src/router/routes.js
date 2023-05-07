@@ -8,6 +8,12 @@ export const routes = [
     component: HomePage,
   },
   {
+    path: '/forum/:id',
+    name: 'Forum',
+    component: () => import('@/views/ForumPage.vue'),
+    props: true,
+  },
+  {
     path: '/thread/:id',
     name: 'ThreadShow',
     component: () => import('@/views/ThreadShowPage.vue'),

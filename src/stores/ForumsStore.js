@@ -5,5 +5,7 @@ import sourceData from '@/data.json';
 export const useForumsStore = defineStore('ForumsStore', () => {
   const forums = reactive(sourceData.forums);
 
-  return { forums };
+  const getForumById = (id) => forums.find((forum) => forum.id === id);
+
+  return { forums, getForumById };
 });

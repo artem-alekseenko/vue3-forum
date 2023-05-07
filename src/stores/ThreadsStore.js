@@ -7,5 +7,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
 
   const getThreadById = (id) => threads.find((thread) => thread.id === id);
 
-  return { threads, getThreadById };
+  const getThreadsByForumId = (id) => threads.filter((thread) => thread.forumId === id);
+
+  return { threads, getThreadById, getThreadsByForumId };
 });
