@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import sourceData from '@/data.json';
+import { useUsersStore } from '@/stores/UsersStore';
 
 const props = defineProps({
   threads: {
@@ -9,9 +10,9 @@ const props = defineProps({
   },
 });
 
-const users = reactive(sourceData.users);
+const usersStore = useUsersStore();
 
-const userById = (userId) => users.find((p) => p.id === userId);
+const userById = (userId) => usersStore.getUserById(userId);
 </script>
 
 <template>
@@ -24,7 +25,7 @@ const userById = (userId) => users.find((p) => p.id === userId);
             <div v-for="thread in props.threads" :key="thread.id" class="thread">
                 <div>
                     <p>
-                        <a href="#">{{ thread.title }}</a>
+                      <router-link :to="{name: 'ThreadShow', params: {id: thread.id}}">{{ thread.title }}</router-link>
                     </p>
                     <p class="text-faded text-xsmall">
                         By <a href="#">{{ userById(thread.userId).name }}</a>, {{ thread.publishedAt }}.
