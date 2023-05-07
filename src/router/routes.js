@@ -6,4 +6,10 @@ export const routes = [
     name: 'Home',
     component: HomePage,
   },
+  {
+    path: '/thread/:id',
+    name: 'ThreadShow',
+    component: () => import('@/views/ThreadShowPage.vue'),
+    props: true,
+  },
 ];
