@@ -9,7 +9,6 @@ const props = defineProps({
 });
 
 const usersStore = useUsersStore();
-
 const userById = (userId) => usersStore.getUserById(userId);
 </script>
 
