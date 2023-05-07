@@ -1,9 +1,10 @@
 <script setup>
-import PageHome from '@/views/HomePage.vue';
 </script>
 
 <template>
-  <page-home />
+    <div class="container">
+        <router-view/>
+    </div>
 </template>
 
 <style scoped>
