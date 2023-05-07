@@ -1,14 +1,14 @@
 <script setup>
-import sourceData from '@/data.json';
-import { reactive } from 'vue';
-import ThreadList from '@/components/ThreadList.vue';
+import ForumList from '@/components/ForumList.vue';
+import { useForumsStore } from '@/stores/ForumsStore';
 
-const threads = reactive(sourceData.threads);
+const forumsStore = useForumsStore();
+const { forums } = forumsStore;
 </script>
 
 <template>
     <h1>Welcome to the Forum</h1>
-    <ThreadList :threads="threads"/>
+    <ForumList :forums="forums"/>
 </template>
 
 <style scoped>
