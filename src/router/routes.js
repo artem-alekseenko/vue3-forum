@@ -13,6 +13,12 @@ export const routes = [
     component: () => import('@/views/ProfilePage.vue'),
   },
   {
+    path: '/me/edit',
+    name: 'ProfileEdit',
+    component: () => import('@/views/ProfilePage.vue'),
+    props: { edit: true },
+  },
+  {
     path: '/category/:id',
     name: 'Category',
     component: () => import('@/views/CategoryPage.vue'),

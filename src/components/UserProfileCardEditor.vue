@@ -1,5 +1,6 @@
 <script setup>
 import { useUsersStore } from '@/stores/UsersStore';
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
   user: {
@@ -10,8 +11,16 @@ const props = defineProps({
 
 const activeUser = { ...props.user };
 
+const router = useRouter();
+
 const save = () => {
   useUsersStore().setUser(activeUser);
+  router.push({ name: 'Profile' });
+};
+
+const cancel = () => {
+  activeUser.value = { ...props.user };
+  router.push({ name: 'Profile' });
 };
 </script>
 
@@ -92,7 +101,12 @@ const save = () => {
       </div>
 
       <div class="btn-group space-between">
-        <button class="btn-ghost">Cancel</button>
+        <button
+            class="btn-ghost"
+            @click="cancel"
+        >
+          Cancel
+        </button>
         <button type="submit" class="btn-blue">Save</button>
       </div>
     </form>
