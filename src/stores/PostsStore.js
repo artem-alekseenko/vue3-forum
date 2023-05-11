@@ -2,6 +2,7 @@ import { reactive } from 'vue';
 import { defineStore } from 'pinia';
 import sourceData from '@/data.json';
 import { useThreadsStore } from '@/stores/ThreadsStore';
+// eslint-disable-next-line import/no-cycle
 import { useUsersStore } from '@/stores/UsersStore';
 
 export const usePostsStore = defineStore('PostsStore', () => {
