@@ -19,9 +19,7 @@ const postsStore = usePostsStore();
 const threadPosts = computed(() => postsStore.getPostsByThreadId(props.id));
 
 const addPost = async (text) => {
-  const postId = await postsStore.setPost({ text, threadId: props.id });
-
-  postsStore.appendPostToThread({ postId, threadId: props.id });
+  await postsStore.createPost({ text, threadId: props.id });
 };
 </script>
 

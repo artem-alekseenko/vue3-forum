@@ -8,7 +8,7 @@ import { useUsersStore } from '@/stores/UsersStore';
 export const usePostsStore = defineStore('PostsStore', () => {
   const posts = reactive(sourceData.posts);
 
-  const getPostById = (id) => posts.find((post) => post.id === id);
+  // const getPostById = (id) => posts.find((post) => post.id === id);
   const getPostsByThreadId = (threadId) => posts.filter((post) => post.threadId === threadId);
   const getPostsByUserId = (userId) => posts.filter((post) => post.userId === userId);
 
@@ -32,20 +32,24 @@ export const usePostsStore = defineStore('PostsStore', () => {
     };
   };
 
-  const setPost = async ({ text, threadId }) => {
-    const post = preparePost({ text, threadId });
-
+  const setPost = async (post) => {
     const index = posts.findIndex((p) => p.id === post.id);
     if (index === -1) {
       posts.push(post);
     } else {
       posts[index] = post;
     }
+  };
 
-    return post.id;
+  const createPost = async ({ text, threadId }) => {
+    const post = preparePost({ text, threadId });
+
+    await setPost(post);
+
+    appendPostToThread({ postId: post.id, threadId });
   };
 
   return {
-    posts, getPostById, getPostsByThreadId, setPost, appendPostToThread, getPostsByUserId,
+    posts, getPostsByThreadId, getPostsByUserId, createPost,
   };
 });
