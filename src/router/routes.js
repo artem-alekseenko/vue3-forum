@@ -11,6 +11,7 @@ export const routes = [
     path: '/me',
     name: 'Profile',
     component: () => import('@/views/ProfilePage.vue'),
+    meta: { toTop: true, smoothScroll: true },
   },
   {
     path: '/me/edit',
