@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import sourceData from '@/data.json';
 // eslint-disable-next-line import/no-cycle
@@ -7,10 +7,12 @@ import { useThreadsStore } from '@/stores/ThreadsStore';
 
 export const useUsersStore = defineStore('UsersStore', () => {
   const users = reactive(sourceData.users);
-  const authUserId = ref(users[1].id);
+  const authUserId = users[1].id;
+
+  const getUserById = (id) => users.find((u) => u.id === id);
 
   const authUser = computed(() => {
-    const user = users.find((u) => u.id === authUserId.value);
+    const user = getUserById(authUserId);
     if (!user) {
       return null;
     }
@@ -27,7 +29,16 @@ export const useUsersStore = defineStore('UsersStore', () => {
     };
   });
 
-  const getUserById = (id) => users.find((u) => u.id === id);
+  const setUser = (user) => {
+    const index = users.findIndex((u) => u.id === user.id);
+    if (index === -1) {
+      users.push(user);
+    } else {
+      Object.assign(users[index], user);
+    }
+  };
 
-  return { users, authUser, getUserById };
+  return {
+    users, authUser, getUserById, setUser,
+  };
 });

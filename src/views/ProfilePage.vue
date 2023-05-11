@@ -3,6 +3,7 @@ import PostList from '@/components/PostList.vue';
 import { useUsersStore } from '@/stores/UsersStore';
 import { storeToRefs } from 'pinia';
 import UserProfileCard from '@/components/UserProfileCard.vue';
+import UserProfileCardEditor from '@/components/UserProfileCardEditor.vue';
 
 const { authUser: user } = storeToRefs(useUsersStore());
 </script>
@@ -12,6 +13,7 @@ const { authUser: user } = storeToRefs(useUsersStore());
     <div class="flex-grid">
       <div class="col-3 push-top">
         <UserProfileCard :user="user" />
+        <UserProfileCardEditor :user="user" />
 
         <p class="text-xsmall text-faded text-center">
           Member since june 2003, last visited 4 hours ago
