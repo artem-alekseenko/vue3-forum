@@ -1,8 +1,9 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useForumsStore } from '@/stores/ForumsStore';
 import { useRouter } from 'vue-router';
 import { useThreadsStore } from '@/stores/ThreadsStore';
+import ThreadEditor from '@/components/ThreadEditor.vue';
 
 const props = defineProps({
   forumId: {
@@ -14,16 +15,13 @@ const props = defineProps({
 const forumsStore = useForumsStore();
 const forum = computed(() => forumsStore.getForumById(props.forumId));
 
-const title = ref('');
-const text = ref('');
-
 const router = useRouter();
 
-const save = async () => {
+const save = async ({ title, text }) => {
   const threadsStore = useThreadsStore();
   const thread = await threadsStore.createThread({
-    title: title.value,
-    text: text.value,
+    title,
+    text,
     forumId: props.forumId,
   });
 
@@ -41,37 +39,7 @@ const cancel = () => {
       Create new thread in <i>{{ forum.name }}</i>
     </h1>
 
-    <form @submit.prevent="save">
-      <div class="form-group">
-        <label for="thread_title">Title:</label>
-        <input
-            v-model="title"
-            type="text"
-            id="thread_title"
-            class="form-input"
-            name="title"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="thread_content">Content:</label>
-        <textarea
-            v-model="text"
-            id="thread_content"
-            class="form-input"
-            name="content"
-            rows="8"
-            cols="140"
-        ></textarea>
-      </div>
-
-      <div class="btn-group">
-        <button class="btn btn-ghost" @click="cancel">Cancel</button>
-        <button class="btn btn-blue" type="submit" name="Publish">
-          Publish
-        </button>
-      </div>
-    </form>
+    <ThreadEditor @save="save" @cancel="cancel"/>
   </div>
 </template>
 
