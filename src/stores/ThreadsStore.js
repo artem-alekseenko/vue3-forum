@@ -56,7 +56,18 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
     return getThreadById(thread.id);
   };
 
+  const updateThread = async ({ id, title, text }) => {
+    const thread = getThreadById(id);
+    thread.title = title;
+
+    const postsStore = usePostsStore();
+    const post = postsStore.getPostById(thread.posts[0]);
+    post.text = text;
+
+    return thread;
+  };
+
   return {
-    threads, getThreadById, getThreadsByForumId, getThreadsByUserId, createThread,
+    threads, getThreadById, getThreadsByForumId, getThreadsByUserId, createThread, updateThread,
   };
 });

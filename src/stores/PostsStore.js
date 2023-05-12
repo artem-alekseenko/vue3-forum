@@ -9,7 +9,7 @@ import { useUsersStore } from '@/stores/UsersStore';
 export const usePostsStore = defineStore('PostsStore', () => {
   const posts = reactive(sourceData.posts);
 
-  // const getPostById = (id) => posts.find((post) => post.id === id);
+  const getPostById = (id) => posts.find((post) => post.id === id);
   const getPostsByThreadId = (threadId) => posts.filter((post) => post.threadId === threadId);
   const getPostsByUserId = (userId) => posts.filter((post) => post.userId === userId);
 
@@ -52,6 +52,6 @@ export const usePostsStore = defineStore('PostsStore', () => {
   };
 
   return {
-    posts, getPostsByThreadId, getPostsByUserId, createPost,
+    posts, getPostById, getPostsByThreadId, getPostsByUserId, createPost,
   };
 });

@@ -51,9 +51,15 @@ export const routes = [
     },
   },
   {
-    path: '/form/:forumId/thread/create',
+    path: '/forum/:forumId/thread/create',
     name: 'ThreadCreate',
     component: () => import('@/views/ThreadCreatePage.vue'),
+    props: true,
+  },
+  {
+    path: '/thread/:id/edit',
+    name: 'ThreadEdit',
+    component: () => import('@/views/ThreadEditPage.vue'),
     props: true,
   },
   {

@@ -3,11 +3,26 @@ import { ref } from 'vue';
 
 const emit = defineEmits(['save', 'cancel']);
 
-const title = ref('');
-const text = ref('');
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+});
+
+const form = ref({
+  title: props.title,
+  text: props.text,
+});
+
+const existing = Boolean(props.title);
 
 const save = () => {
-  emit('save', { title: title.value, text: text.value });
+  emit('save', { ...form.value });
 };
 </script>
 
@@ -16,7 +31,7 @@ const save = () => {
     <div class="form-group">
       <label for="thread_title">Title:</label>
       <input
-          v-model="title"
+          v-model="form.title"
           type="text"
           id="thread_title"
           class="form-input"
@@ -27,7 +42,7 @@ const save = () => {
     <div class="form-group">
       <label for="thread_content">Content:</label>
       <textarea
-          v-model="text"
+          v-model="form.text"
           id="thread_content"
           class="form-input"
           name="content"
@@ -39,7 +54,7 @@ const save = () => {
     <div class="btn-group">
       <button class="btn btn-ghost" @click.prevent="emit('cancel')">Cancel</button>
       <button class="btn btn-blue" type="submit" name="Publish">
-        Publish
+        {{existing ? 'Update' : 'Publish'}}
       </button>
     </div>
   </form>
