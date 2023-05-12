@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import sourceData from '@/data.json';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
+// eslint-disable-next-line import/no-cycle
 import { useThreadsStore } from '@/stores/ThreadsStore';
 
 export const useUsersStore = defineStore('UsersStore', () => {

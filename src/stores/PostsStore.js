@@ -1,6 +1,7 @@
 import { reactive } from 'vue';
 import { defineStore } from 'pinia';
 import sourceData from '@/data.json';
+// eslint-disable-next-line import/no-cycle
 import { useThreadsStore } from '@/stores/ThreadsStore';
 // eslint-disable-next-line import/no-cycle
 import { useUsersStore } from '@/stores/UsersStore';
@@ -15,6 +16,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
   const appendPostToThread = ({ postId, threadId }) => {
     const threadsStore = useThreadsStore();
     const thread = threadsStore.getThreadById(threadId);
+    thread.posts = thread.posts || [];
     thread.posts.push(postId);
   };
 
