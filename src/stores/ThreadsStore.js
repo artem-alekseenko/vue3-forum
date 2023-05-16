@@ -11,7 +11,23 @@ import { findById, makeAppendChildToParent, upsert } from '@/helpers';
 export const useThreadsStore = defineStore('ThreadsStore', () => {
   const threads = reactive(sourceData.threads);
 
-  const getThreadById = (id) => findById(threads, id);
+  const getThreadById = (id) => {
+    const thread = findById(threads, id);
+
+    return {
+      ...thread,
+      get author() {
+        return useUsersStore().getUserById(thread.userId);
+      },
+      get repliesCount() {
+        return (thread.posts?.length || 1) - 1;
+      },
+      get contributorsCount() {
+        return thread.contributors?.length || 0;
+      },
+    };
+  };
+
   const getThreadsByForumId = (id) => threads.filter((thread) => thread.forumId === id);
   const getThreadsByUserId = (id) => threads.filter((thread) => thread.userId === id);
 
@@ -30,13 +46,17 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
 
   const setThread = async (thread) => upsert(threads, thread);
 
-  const appendThreadToForum = makeAppendChildToParent({ parent: useForumsStore().forums, child: 'threads' });
+  const appendPostToThread = makeAppendChildToParent({ parent: threads, child: 'posts' });
+
+  const appendContributorToThread = makeAppendChildToParent({ parent: threads, child: 'contributors' });
+
   const createThread = async ({ text, title, forumId }) => {
     const thread = prepareThread({ title, forumId });
 
     await setThread(thread);
 
-    appendThreadToForum({ parentId: forumId, childId: thread.id });
+    const forumsStore = useForumsStore();
+    forumsStore.appendThreadToForum({ parentId: forumId, childId: thread.id });
 
     const postsStore = usePostsStore();
     await postsStore.createPost({ text, threadId: thread.id });
@@ -56,6 +76,13 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   };
 
   return {
-    threads, getThreadById, getThreadsByForumId, getThreadsByUserId, createThread, updateThread,
+    threads,
+    getThreadById,
+    getThreadsByForumId,
+    getThreadsByUserId,
+    createThread,
+    updateThread,
+    appendContributorToThread,
+    appendPostToThread,
   };
 });
