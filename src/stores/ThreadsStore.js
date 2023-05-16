@@ -6,7 +6,7 @@ import { useUsersStore } from '@/stores/UsersStore';
 import { useForumsStore } from '@/stores/ForumsStore';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
-import { findById } from '@/helpers';
+import { findById, upsert } from '@/helpers';
 
 export const useThreadsStore = defineStore('ThreadsStore', () => {
   const threads = reactive(sourceData.threads);
@@ -28,14 +28,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
     };
   };
 
-  const setThread = async (thread) => {
-    const index = threads.findIndex((t) => t.id === thread.id);
-    if (index === -1) {
-      threads.push(thread);
-    } else {
-      threads[index] = thread;
-    }
-  };
+  const setThread = async (thread) => upsert(threads, thread);
 
   const appendThreadToForum = ({ forumId, threadId }) => {
     const forumsStore = useForumsStore();

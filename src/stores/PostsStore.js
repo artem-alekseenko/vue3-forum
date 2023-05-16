@@ -5,7 +5,7 @@ import sourceData from '@/data.json';
 import { useThreadsStore } from '@/stores/ThreadsStore';
 // eslint-disable-next-line import/no-cycle
 import { useUsersStore } from '@/stores/UsersStore';
-import { findById } from '@/helpers';
+import { findById, upsert } from '@/helpers';
 
 export const usePostsStore = defineStore('PostsStore', () => {
   const posts = reactive(sourceData.posts);
@@ -35,14 +35,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
     };
   };
 
-  const setPost = async (post) => {
-    const index = posts.findIndex((p) => p.id === post.id);
-    if (index === -1) {
-      posts.push(post);
-    } else {
-      posts[index] = post;
-    }
-  };
+  const setPost = async (post) => upsert(posts, post);
 
   const createPost = async ({ text, threadId }) => {
     const post = preparePost({ text, threadId });

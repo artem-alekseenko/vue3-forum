@@ -4,9 +4,8 @@ import TheNavbar from '@/components/TheNavbar.vue';
 
 <template>
   <the-navbar/>
-  <div class="container">
-      <router-view/>
-  </div>
+  <router-view/>
+
 </template>
 
 <style scoped>

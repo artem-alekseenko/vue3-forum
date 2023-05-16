@@ -18,7 +18,7 @@ const getForumsForCategory = (categoryData) => forumsStore.getForumsByCategoryId
 </script>
 
 <template>
-  <h1 class="push-top">{{ category.name }}</h1>
+  <h1 class="push-top col-full">{{ category.name }}</h1>
   <ForumList
       :title="category.name"
       :forums="getForumsForCategory(category)"

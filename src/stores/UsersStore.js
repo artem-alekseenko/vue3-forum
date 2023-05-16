@@ -5,7 +5,7 @@ import sourceData from '@/data.json';
 import { usePostsStore } from '@/stores/PostsStore';
 // eslint-disable-next-line import/no-cycle
 import { useThreadsStore } from '@/stores/ThreadsStore';
-import { findById } from '@/helpers';
+import { findById, upsert } from '@/helpers';
 
 export const useUsersStore = defineStore('UsersStore', () => {
   const users = reactive(sourceData.users);
@@ -31,14 +31,7 @@ export const useUsersStore = defineStore('UsersStore', () => {
     };
   });
 
-  const setUser = (user) => {
-    const index = users.findIndex((u) => u.id === user.id);
-    if (index === -1) {
-      users.push(user);
-    } else {
-      Object.assign(users[index], user);
-    }
-  };
+  const setUser = async (user) => upsert(users, user);
 
   return {
     users, authUser, getUserById, setUser,

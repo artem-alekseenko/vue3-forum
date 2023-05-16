@@ -7,7 +7,7 @@ const { categories } = storeToRefs(useCategoriesStore());
 </script>
 
 <template>
-  <h1 class="push-top">Welcome to the Forum</h1>
+  <h1 class="push-top col-full">Welcome to the Forum</h1>
   <CategoryList :categories="categories"/>
 </template>
 
