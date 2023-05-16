@@ -1527,20 +1527,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:9.12.0":
-  version: 9.12.0
-  resolution: "eslint-plugin-vue@npm:9.12.0"
+"eslint-plugin-vue@npm:9.13.0":
+  version: 9.13.0
+  resolution: "eslint-plugin-vue@npm:9.13.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.3.0
     natural-compare: ^1.4.0
     nth-check: ^2.0.1
     postcss-selector-parser: ^6.0.9
     semver: ^7.3.5
-    vue-eslint-parser: ^9.0.1
+    vue-eslint-parser: ^9.3.0
     xml-name-validator: ^4.0.0
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: 77727261d0137f88869f978c6ea2bafe002b6275e90e95849d0ed668bb87c295e21a562aa2ef8d5b884c67c142e245163fb3fca09a3a90ec49e7b3d4b416fa99
+  checksum: 619b8239edd095591e7e8404cd4ad5a9e5712bb4dceb77274bf4272168478d7ec4e8c7275cfbee49e7a6a68751804235dc225eacd55b5d1dd02687a1d21136c0
   languageName: node
   linkType: hard
 
@@ -1766,10 +1766,10 @@ __metadata:
     eslint-config-airbnb-base: 15.0.0
     eslint-import-resolver-alias: 1.1.2
     eslint-plugin-import: 2.27.5
-    eslint-plugin-vue: 9.12.0
+    eslint-plugin-vue: 9.13.0
     jsdom: 22.0.0
     pinia: 2.0.36
-    vite: 4.3.5
+    vite: 4.3.7
     vite-plugin-eslint: 1.8.1
     vitest: 0.31.0
     vue: 3.3.2
@@ -3768,7 +3768,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:4.3.5, vite@npm:^3.0.0 || ^4.0.0":
+"vite@npm:4.3.7":
+  version: 4.3.7
+  resolution: "vite@npm:4.3.7"
+  dependencies:
+    esbuild: ^0.17.5
+    fsevents: ~2.3.2
+    postcss: ^8.4.23
+    rollup: ^3.21.0
+  peerDependencies:
+    "@types/node": ">= 14"
+    less: "*"
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: cda8c86fd9f9ab984f2ab8ae09f89bfef7dc636142f0b1ed30d37b8155516729cf91d95eab7ba43d43bb51d8068f0d938ac85dc80d3f53497fbd35f50d27ec25
+  languageName: node
+  linkType: hard
+
+"vite@npm:^3.0.0 || ^4.0.0":
   version: 4.3.5
   resolution: "vite@npm:4.3.5"
   dependencies:
@@ -3882,9 +3919,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-eslint-parser@npm:^9.0.1":
-  version: 9.2.1
-  resolution: "vue-eslint-parser@npm:9.2.1"
+"vue-eslint-parser@npm:^9.3.0":
+  version: 9.3.0
+  resolution: "vue-eslint-parser@npm:9.3.0"
   dependencies:
     debug: ^4.3.4
     eslint-scope: ^7.1.1
@@ -3895,7 +3932,7 @@ __metadata:
     semver: ^7.3.6
   peerDependencies:
     eslint: ">=6.0.0"
-  checksum: f643ec4029c9420817854f1bcd49cd35f7bcdcc293ad75d2619af873067768fa5887ce4665093fa6071ab1935a421afb541f1c1a29d27952bc35d55811f51fb1
+  checksum: 9bdf375655c405f49a6e46e20127e42e2cb03ec63e811baf9798da7b881769653bb56aba7007d7e6584b8b22c14f0ffbdaf8fa3a902bd52ce9ff947b78e55188
   languageName: node
   linkType: hard
 
