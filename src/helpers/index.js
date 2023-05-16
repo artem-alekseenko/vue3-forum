@@ -9,3 +9,11 @@ export const upsert = (array, item) => {
     array.push(item);
   }
 };
+
+export const makeAppendChildToParent = ({ parent, child }) => ({ parentId, childId }) => {
+  const resource = findById(parent, parentId);
+  resource[child] = resource[child] || [];
+  if (!resource[child].includes(childId)) {
+    resource[child].push(childId);
+  }
+};

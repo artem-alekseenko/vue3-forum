@@ -6,7 +6,7 @@ import { useUsersStore } from '@/stores/UsersStore';
 import { useForumsStore } from '@/stores/ForumsStore';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
-import { findById, upsert } from '@/helpers';
+import { findById, makeAppendChildToParent, upsert } from '@/helpers';
 
 export const useThreadsStore = defineStore('ThreadsStore', () => {
   const threads = reactive(sourceData.threads);
@@ -30,19 +30,13 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
 
   const setThread = async (thread) => upsert(threads, thread);
 
-  const appendThreadToForum = ({ forumId, threadId }) => {
-    const forumsStore = useForumsStore();
-    const forum = forumsStore.getForumById(forumId);
-    forum.threads = forum.threads || [];
-    forum.threads.push(threadId);
-  };
-
+  const appendThreadToForum = makeAppendChildToParent({ parent: useForumsStore().forums, child: 'threads' });
   const createThread = async ({ text, title, forumId }) => {
     const thread = prepareThread({ title, forumId });
 
     await setThread(thread);
 
-    appendThreadToForum({ forumId, threadId: thread.id });
+    appendThreadToForum({ parentId: forumId, childId: thread.id });
 
     const postsStore = usePostsStore();
     await postsStore.createPost({ text, threadId: thread.id });

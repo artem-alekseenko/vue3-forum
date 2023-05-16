@@ -5,7 +5,7 @@ import sourceData from '@/data.json';
 import { useThreadsStore } from '@/stores/ThreadsStore';
 // eslint-disable-next-line import/no-cycle
 import { useUsersStore } from '@/stores/UsersStore';
-import { findById, upsert } from '@/helpers';
+import { findById, makeAppendChildToParent, upsert } from '@/helpers';
 
 export const usePostsStore = defineStore('PostsStore', () => {
   const posts = reactive(sourceData.posts);
@@ -14,12 +14,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
   const getPostsByThreadId = (threadId) => posts.filter((post) => post.threadId === threadId);
   const getPostsByUserId = (userId) => posts.filter((post) => post.userId === userId);
 
-  const appendPostToThread = ({ postId, threadId }) => {
-    const threadsStore = useThreadsStore();
-    const thread = threadsStore.getThreadById(threadId);
-    thread.posts = thread.posts || [];
-    thread.posts.push(postId);
-  };
+  const appendPostToThread = makeAppendChildToParent({ parent: useThreadsStore().threads, child: 'posts' });
 
   const preparePost = ({ text, threadId }) => {
     const usersStore = useUsersStore();
@@ -42,7 +37,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
 
     await setPost(post);
 
-    appendPostToThread({ postId: post.id, threadId });
+    appendPostToThread({ parentId: threadId, childId: post.id });
   };
 
   return {
