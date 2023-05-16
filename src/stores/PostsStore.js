@@ -17,7 +17,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
   const preparePost = ({ text, threadId }) => {
     const usersStore = useUsersStore();
     const { authUser } = usersStore;
-    const postId = `ggqq${Math.random()}`;
+    const postId = `post_${Math.random()}`;
 
     return {
       id: postId,

@@ -33,7 +33,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
 
   const prepareThread = ({ title, forumId }) => {
     const { authUser } = useUsersStore();
-    const threadId = `tttt${Math.random()}`;
+    const threadId = `thread_${Math.random()}`;
 
     return {
       id: threadId,
