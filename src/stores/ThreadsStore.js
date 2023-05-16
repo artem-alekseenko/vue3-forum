@@ -6,11 +6,12 @@ import { useUsersStore } from '@/stores/UsersStore';
 import { useForumsStore } from '@/stores/ForumsStore';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
+import { findById } from '@/helpers';
 
 export const useThreadsStore = defineStore('ThreadsStore', () => {
   const threads = reactive(sourceData.threads);
 
-  const getThreadById = (id) => threads.find((thread) => thread.id === id);
+  const getThreadById = (id) => findById(threads, id);
   const getThreadsByForumId = (id) => threads.filter((thread) => thread.forumId === id);
   const getThreadsByUserId = (id) => threads.filter((thread) => thread.userId === id);
 

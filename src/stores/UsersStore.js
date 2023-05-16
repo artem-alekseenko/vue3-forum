@@ -5,12 +5,13 @@ import sourceData from '@/data.json';
 import { usePostsStore } from '@/stores/PostsStore';
 // eslint-disable-next-line import/no-cycle
 import { useThreadsStore } from '@/stores/ThreadsStore';
+import { findById } from '@/helpers';
 
 export const useUsersStore = defineStore('UsersStore', () => {
   const users = reactive(sourceData.users);
   const authUserId = users[1].id;
 
-  const getUserById = (id) => users.find((u) => u.id === id);
+  const getUserById = (id) => findById(users, id);
 
   const authUser = computed(() => {
     const user = getUserById(authUserId);
