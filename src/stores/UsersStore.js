@@ -13,27 +13,36 @@ export const useUsersStore = defineStore('UsersStore', () => {
 
   const getUserById = (id) => findById(users, id);
 
-  const authUser = computed(() => {
-    const user = getUserById(authUserId);
+  const user = (id) => {
+    // eslint-disable-next-line no-shadow
+    const user = getUserById(id);
     if (!user) {
       return null;
     }
 
-    const posts = usePostsStore().getPostsByUserId(user.id);
-    const threads = useThreadsStore().getThreadsByUserId(user.id);
-
     return {
       ...user,
-      posts,
-      postsCount: posts.length,
-      threads,
-      threadsCount: threads.length,
+      get posts() {
+        return usePostsStore().getPostsByUserId(user.id);
+      },
+      get postsCount() {
+        return this.posts.length;
+      },
+      get threads() {
+        return useThreadsStore().getThreadsByUserId(user.id);
+      },
+      get threadsCount() {
+        return this.threads.length;
+      },
     };
-  });
+  };
 
+  const authUser = computed(() => user(authUserId));
+
+  // eslint-disable-next-line no-shadow
   const setUser = async (user) => upsert(users, user);
 
   return {
-    users, authUser, getUserById, setUser,
+    users, user, authUser, getUserById, setUser,
   };
 });

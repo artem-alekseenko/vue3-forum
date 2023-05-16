@@ -11,10 +11,10 @@ const props = defineProps({
 });
 
 const forumsStore = useForumsStore();
-const forum = forumsStore.getForumById(props.id);
+const forum = forumsStore.forum(props.id);
 
 const threadsStore = useThreadsStore();
-const threads = threadsStore.getThreadsByForumId(props.id);
+const threads = forum.threadIds.map((threadId) => threadsStore.thread(threadId));
 </script>
 
 <template>

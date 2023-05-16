@@ -9,7 +9,7 @@ const props = defineProps({
 });
 
 const usersStore = useUsersStore();
-const userById = (userId) => usersStore.getUserById(userId);
+const userById = (userId) => usersStore.user(userId);
 </script>
 
 <template>
@@ -26,7 +26,8 @@ const userById = (userId) => usersStore.getUserById(userId);
           <img class="avatar-large" :src="userById(post.userId).avatar" alt="">
         </a>
 
-        <p class="desktop-only text-small">107 posts</p>
+        <p class="desktop-only text-small">{{userById(post.userId).postsCount}} posts</p>
+        <p class="desktop-only text-small">{{userById(post.userId).threadsCount}} threads</p>
 
       </div>
 

@@ -11,7 +11,10 @@ import { findById, makeAppendChildToParent, upsert } from '@/helpers';
 export const useThreadsStore = defineStore('ThreadsStore', () => {
   const threads = reactive(sourceData.threads);
 
-  const getThreadById = (id) => {
+  const getThreadById = (id) => findById(threads, id);
+
+  const thread = (id) => {
+    // eslint-disable-next-line no-shadow
     const thread = findById(threads, id);
 
     return {
@@ -28,7 +31,9 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
     };
   };
 
+  // eslint-disable-next-line no-shadow
   const getThreadsByForumId = (id) => threads.filter((thread) => thread.forumId === id);
+  // eslint-disable-next-line no-shadow
   const getThreadsByUserId = (id) => threads.filter((thread) => thread.userId === id);
 
   const prepareThread = ({ title, forumId }) => {
@@ -44,6 +49,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
     };
   };
 
+  // eslint-disable-next-line no-shadow
   const setThread = async (thread) => upsert(threads, thread);
 
   const appendPostToThread = makeAppendChildToParent({ parent: threads, child: 'posts' });
@@ -51,6 +57,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   const appendContributorToThread = makeAppendChildToParent({ parent: threads, child: 'contributors' });
 
   const createThread = async ({ text, title, forumId }) => {
+    // eslint-disable-next-line no-shadow
     const thread = prepareThread({ title, forumId });
 
     await setThread(thread);
@@ -65,6 +72,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   };
 
   const updateThread = async ({ id, title, text }) => {
+    // eslint-disable-next-line no-shadow
     const thread = getThreadById(id);
     thread.title = title;
 
@@ -78,6 +86,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   return {
     threads,
     getThreadById,
+    thread,
     getThreadsByForumId,
     getThreadsByUserId,
     createThread,

@@ -12,7 +12,7 @@ const props = defineProps({
   },
 });
 
-const thread = useThreadsStore().getThreadById(props.id);
+const thread = useThreadsStore().thread(props.id);
 
 const text = computed(() => {
   const post = usePostsStore().getPostById(thread.posts[0]);

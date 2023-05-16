@@ -29,7 +29,7 @@ const userById = (userId) => usersStore.getUserById(userId);
 
               <div class="activity">
                   <p class="replies-count">
-                      {{ thread.posts.length }} replies
+                    {{ thread.repliesCount }} replies
                   </p>
 
                   <img class="avatar-medium" :src="userById(thread.userId).avatar" alt="">
