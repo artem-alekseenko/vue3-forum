@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const emit = defineEmits(['save', 'cancel']);
 
@@ -19,7 +19,7 @@ const form = ref({
   text: props.text,
 });
 
-const existing = Boolean(props.title);
+const existing = computed(() => Boolean(props.title));
 
 const save = () => {
   emit('save', { ...form.value });

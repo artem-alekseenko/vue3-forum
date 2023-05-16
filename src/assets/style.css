@@ -347,6 +347,7 @@ figcaption {
     padding-bottom: 7px;
     box-shadow: 2px 2px 1px rgba(136, 136, 136, 0.09);
     margin-bottom: 20px;
+    max-width: 100vh;
 }
 
 @media (max-width: 820px) {
@@ -2280,7 +2281,7 @@ figure {
     margin: 0 auto;
     max-width: 1200px;
     flex-grow: 1;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
 }
 
 @media (min-width: 1360px) {
