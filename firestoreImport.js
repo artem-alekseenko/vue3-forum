@@ -1,11 +1,11 @@
-/* eslint-disable no-console,no-underscore-dangle */
-// Imports
+/* eslint-disable no-console,no-underscore-dangle, import/extensions */
+// noinspection ES6PreferShortImport
+
 import firestoreService from 'firestore-export-import';
 import fs from 'fs';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
-// eslint-disable-next-line import/extensions
 import { firebaseApp } from './src/config/firebase.js';
 
 const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccount.json', 'utf8'));
