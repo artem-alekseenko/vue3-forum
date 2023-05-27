@@ -1,11 +1,24 @@
-import { reactive } from 'vue';
 import { defineStore } from 'pinia';
-import sourceData from '@/data.json';
-import { doc, getDoc } from 'firebase/firestore';
+import {
+  collection, doc, getDoc, getDocs,
+} from 'firebase/firestore';
 import { db } from '@/config/firebase';
 
 export const useCategoriesStore = defineStore('CategoriesStore', () => {
-  const categories = reactive(sourceData.categories);
+  const categories = async () => {
+    const categoriesCollection = collection(db, 'categories');
+    const categoriesSnapshot = await getDocs(categoriesCollection);
+
+    const promises = categoriesSnapshot.docs.map(async (document) => {
+      const data = document.data();
+      return {
+        id: document.id,
+        ...data,
+      };
+    });
+
+    return Promise.all(promises);
+  };
 
   const getCategoryById = async (id) => {
     const categoryDocRef = doc(db, 'categories', id);
