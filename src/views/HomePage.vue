@@ -1,9 +1,13 @@
 <script setup>
 import { useCategoriesStore } from '@/stores/CategoriesStore';
 import CategoryList from '@/components/CategoryList.vue';
-import { storeToRefs } from 'pinia';
+import { ref, watchEffect } from 'vue';
 
-const { categories } = storeToRefs(useCategoriesStore());
+const categories = ref([]);
+const categoriesStore = useCategoriesStore();
+watchEffect(async () => {
+  categories.value = await categoriesStore.categories();
+});
 </script>
 
 <template>
