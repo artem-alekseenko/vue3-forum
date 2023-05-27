@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useForumsStore } from '@/stores/ForumsStore';
 import { useRouter } from 'vue-router';
 import { useThreadsStore } from '@/stores/ThreadsStore';
@@ -12,8 +12,12 @@ const props = defineProps({
   },
 });
 
+const forum = ref(null);
 const forumsStore = useForumsStore();
-const forum = computed(() => forumsStore.getForumById(props.forumId));
+const forumPromise = forumsStore.forum(props.forumId);
+watchEffect(async () => {
+  forum.value = await forumPromise;
+});
 
 const router = useRouter();
 
@@ -34,7 +38,15 @@ const cancel = () => {
 </script>
 
 <template>
-  <div class="col-full push-top">
+  <div
+      v-if="!forum"
+      class="text-center">
+    Loading...
+  </div>
+  <div
+      v-else
+      class="col-full push-top"
+  >
     <h1>
       Create new thread in <i>{{ forum.name }}</i>
     </h1>

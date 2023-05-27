@@ -1,14 +1,12 @@
 import { reactive } from 'vue';
 import { defineStore } from 'pinia';
 import sourceData from '@/data.json';
-import { findById, makeAppendChildToParent } from '@/helpers';
+import { makeAppendChildToParent } from '@/helpers';
 import { db } from '@/config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 export const useForumsStore = defineStore('ForumsStore', () => {
   const forums = reactive(sourceData.forums);
-
-  const getForumById = (id) => findById(forums, id);
 
   const fetchForum = async (id) => {
     const forumDocRef = doc(db, 'forums', id);
@@ -42,6 +40,6 @@ export const useForumsStore = defineStore('ForumsStore', () => {
   const getForumsByCategoryId = (id) => forums.filter((forum) => forum.categoryId === id);
 
   return {
-    forums, getForumById, forum, getForumsByCategoryId, appendThreadToForum,
+    forums, forum, getForumsByCategoryId, appendThreadToForum,
   };
 });
