@@ -6,12 +6,31 @@ import { useThreadsStore } from '@/stores/ThreadsStore';
 // eslint-disable-next-line import/no-cycle
 import { useUsersStore } from '@/stores/UsersStore';
 import { findById, upsert } from '@/helpers';
+import { db } from '@/config/firebase';
+import {
+  collection, getDocs, query, where,
+} from 'firebase/firestore';
 
 export const usePostsStore = defineStore('PostsStore', () => {
   const posts = reactive(sourceData.posts);
 
   const getPostById = (id) => findById(posts, id);
-  const getPostsByThreadId = (threadId) => posts.filter((post) => post.threadId === threadId);
+
+  const getPostsByThreadId = async (threadId) => {
+    const postsCollection = collection(db, 'posts');
+    const postsQuery = query(postsCollection, where('threadId', '==', threadId));
+    const postsSnapshot = await getDocs(postsQuery);
+
+    const promises = postsSnapshot.docs.map(async (document) => {
+      const data = document.data();
+      return {
+        id: document.id,
+        ...data,
+      };
+    });
+
+    return Promise.all(promises);
+  };
   const getPostsByUserId = (userId) => posts.filter((post) => post.userId === userId);
 
   const preparePost = ({ text, threadId }) => {
