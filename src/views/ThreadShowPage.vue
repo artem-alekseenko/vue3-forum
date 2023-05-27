@@ -2,7 +2,7 @@
 import { usePostsStore } from '@/stores/PostsStore';
 import { useThreadsStore } from '@/stores/ThreadsStore';
 import PostList from '@/components/PostList.vue';
-import { computed, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import PostEditor from '@/components/PostEditor.vue';
 
 const props = defineProps({
@@ -12,16 +12,19 @@ const props = defineProps({
   },
 });
 
+const thread = ref(null);
 const threadsStore = useThreadsStore();
 const threadPromise = threadsStore.thread(props.id);
-const thread = ref(null);
-
 watchEffect(async () => {
   thread.value = await threadPromise;
 });
 
+const threadPosts = ref([]);
 const postsStore = usePostsStore();
-const threadPosts = computed(() => postsStore.getPostsByThreadId(props.id));
+const threadPostsPromises = postsStore.getPostsByThreadId(props.id);
+watchEffect(async () => {
+  threadPosts.value = await threadPostsPromises;
+});
 
 const addPost = async (text) => {
   await postsStore.createPost({ text, threadId: props.id });
