@@ -7,26 +7,47 @@ import { useForumsStore } from '@/stores/ForumsStore';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
 import { findById, makeAppendChildToParent, upsert } from '@/helpers';
+import {
+  doc, getDoc,
+} from 'firebase/firestore';
+import { db } from '@/config/firebase';
 
 export const useThreadsStore = defineStore('ThreadsStore', () => {
   const threads = reactive(sourceData.threads);
 
   const getThreadById = (id) => findById(threads, id);
 
-  const thread = (id) => {
-    // eslint-disable-next-line no-shadow
-    const thread = findById(threads, id);
+  const fetchThread = async (id) => {
+    const threadDocRef = doc(db, 'threads', id);
+    const threadDocSnap = await getDoc(threadDocRef);
+    if (threadDocSnap.exists()) {
+      const res = threadDocSnap.data();
+      return {
+        id: threadDocSnap.id,
+        ...res,
+      };
+    }
+    // eslint-disable-next-line no-console
+    console.error(`No thread with id ${id}`);
+    return null;
+  };
+
+  const thread = async (id) => {
+    const threadFromDb = await fetchThread(id);
+
+    const authorPromise = useUsersStore().getUserById(threadFromDb.userId);
+    const author = await authorPromise;
 
     return {
-      ...thread,
+      ...threadFromDb,
       get author() {
-        return useUsersStore().getUserById(thread.userId);
+        return author;
       },
       get repliesCount() {
-        return (thread.posts?.length || 1) - 1;
+        return (threadFromDb.posts?.length || 1) - 1;
       },
       get contributorsCount() {
-        return thread.contributors?.length || 0;
+        return threadFromDb.contributors?.length || 0;
       },
     };
   };
