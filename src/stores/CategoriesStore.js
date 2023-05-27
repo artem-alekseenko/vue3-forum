@@ -20,7 +20,7 @@ export const useCategoriesStore = defineStore('CategoriesStore', () => {
     return Promise.all(promises);
   };
 
-  const getCategoryById = async (id) => {
+  const category = async (id) => {
     const categoryDocRef = doc(db, 'categories', id);
     const categoryDocSnap = await getDoc(categoryDocRef);
     if (categoryDocSnap.exists()) {
@@ -35,5 +35,5 @@ export const useCategoriesStore = defineStore('CategoriesStore', () => {
     return null;
   };
 
-  return { categories, getCategoryById };
+  return { categories, category };
 });

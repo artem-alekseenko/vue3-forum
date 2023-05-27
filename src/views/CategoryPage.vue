@@ -13,7 +13,7 @@ const props = defineProps({
 
 const category = ref(null);
 const categoriesStore = useCategoriesStore();
-const categoryPromise = categoriesStore.getCategoryById(props.id);
+const categoryPromise = categoriesStore.category(props.id);
 watchEffect(async () => {
   category.value = await categoryPromise;
 });
