@@ -2,7 +2,7 @@
 import { usePostsStore } from '@/stores/PostsStore';
 import { useThreadsStore } from '@/stores/ThreadsStore';
 import PostList from '@/components/PostList.vue';
-import { computed } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import PostEditor from '@/components/PostEditor.vue';
 
 const props = defineProps({
@@ -13,7 +13,12 @@ const props = defineProps({
 });
 
 const threadsStore = useThreadsStore();
-const thread = threadsStore.thread(props.id);
+const threadPromise = threadsStore.thread(props.id);
+const thread = ref(null);
+
+watchEffect(async () => {
+  thread.value = await threadPromise;
+});
 
 const postsStore = usePostsStore();
 const threadPosts = computed(() => postsStore.getPostsByThreadId(props.id));
@@ -24,16 +29,22 @@ const addPost = async (text) => {
 </script>
 
 <template>
-    <div class="col-large push-top">
+    <div
+        v-if="!thread"
+        class="text-center"
+    >
+      Loading...
+    </div>
+    <template v-if="thread">
+      <div class="col-large push-top">
       <h1>
-        {{ thread.title }}
         <router-link :to="{ name: 'ThreadEdit', id: this.id }">
           <button class="btn-green btn-small">Edit Thread</button>
         </router-link>
       </h1>
 
       <p>
-        By <a href="#" class="link-unstyled">{{thread.author.name}}</a>, <AppDate :timestamp="thread.publishedAt" />.
+        By <a href="#" class="link-unstyled">{{thread.author?.name}}</a>, <AppDate :timestamp="thread.publishedAt" />.
         <span
             style="float:right; margin-top: 2px;"
             class="hide-mobile text-faded text-small"
@@ -46,4 +57,5 @@ const addPost = async (text) => {
 
         <post-editor @save="addPost" />
     </div>
+    </template>
 </template>
