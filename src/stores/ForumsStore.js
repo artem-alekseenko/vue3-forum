@@ -3,7 +3,9 @@ import { defineStore } from 'pinia';
 import sourceData from '@/data.json';
 import { makeAppendChildToParent } from '@/helpers';
 import { db } from '@/config/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import {
+  collection, doc, getDoc, getDocs, query, where,
+} from 'firebase/firestore';
 
 export const useForumsStore = defineStore('ForumsStore', () => {
   const forums = reactive(sourceData.forums);
@@ -36,8 +38,23 @@ export const useForumsStore = defineStore('ForumsStore', () => {
 
   const appendThreadToForum = makeAppendChildToParent({ parent: forums, child: 'threads' });
 
-  // eslint-disable-next-line no-shadow
-  const getForumsByCategoryId = (id) => forums.filter((forum) => forum.categoryId === id);
+  const getForumsByCategoryId = async (categoryId) => {
+    const forumsCollection = collection(db, 'forums');
+    const forumsQuery = query(
+      forumsCollection,
+      where('categoryId', '==', categoryId),
+    );
+    const forumsSnapshot = await getDocs(forumsQuery);
+
+    const forumsPromises = forumsSnapshot.docs.map(async (forumDoc) => {
+      const data = forumDoc.data();
+      return {
+        id: forumDoc.id,
+        ...data,
+      };
+    });
+    return Promise.all(forumsPromises);
+  };
 
   return {
     forum, getForumsByCategoryId, appendThreadToForum,
