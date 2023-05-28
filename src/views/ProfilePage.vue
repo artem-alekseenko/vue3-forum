@@ -1,9 +1,9 @@
 <script setup>
 import PostList from '@/components/PostList.vue';
 import { useUsersStore } from '@/stores/UsersStore';
-import { storeToRefs } from 'pinia';
 import UserProfileCard from '@/components/UserProfileCard.vue';
 import UserProfileCardEditor from '@/components/UserProfileCardEditor.vue';
+import { ref, watchEffect } from 'vue';
 
 const props = defineProps({
   edit: {
@@ -12,11 +12,23 @@ const props = defineProps({
   },
 });
 
-const { authUser: user } = storeToRefs(useUsersStore());
+const user = ref(null);
+const usersStore = useUsersStore();
+watchEffect(async () => {
+  user.value = await usersStore.authUser;
+});
 </script>
 
 <template>
-  <div class="container">
+  <div
+      v-if="!user"
+      class="text-center">
+    Loading...
+  </div>
+  <div
+      v-else
+      class="container"
+  >
     <div class="flex-grid">
       <div class="col-3 push-top">
         <UserProfileCard
