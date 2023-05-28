@@ -6,35 +6,42 @@ import { usePostsStore } from '@/stores/PostsStore';
 // eslint-disable-next-line import/no-cycle
 import { useThreadsStore } from '@/stores/ThreadsStore';
 import { findById, upsert } from '@/helpers';
+import { db } from '@/config/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export const useUsersStore = defineStore('UsersStore', () => {
   const users = reactive(sourceData.users);
-  const authUserId = users[1].id;
+  const authUserId = '7uVPJS9GHoftN58Z2MXCYDqmNAh2';
 
   const getUserById = (id) => findById(users, id);
 
-  const user = (id) => {
-    // eslint-disable-next-line no-shadow
-    const user = getUserById(id);
-    if (!user) {
-      return null;
+  const user = async (id) => {
+    const userDocRef = doc(db, 'users', id);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      const res = userDocSnap.data();
+      const posts = await usePostsStore().getPostsByUserId(id);
+      const threads = await useThreadsStore().getThreadsByUserId(id);
+      return {
+        id: userDocSnap.id,
+        ...res,
+        get posts() {
+          return posts;
+        },
+        get postsCount() {
+          return posts.length;
+        },
+        get threads() {
+          return threads;
+        },
+        get threadsCount() {
+          return threads.length;
+        },
+      };
     }
-
-    return {
-      ...user,
-      get posts() {
-        return usePostsStore().getPostsByUserId(user.id);
-      },
-      get postsCount() {
-        return this.posts.length;
-      },
-      get threads() {
-        return useThreadsStore().getThreadsByUserId(user.id);
-      },
-      get threadsCount() {
-        return this.threads.length;
-      },
-    };
+    // eslint-disable-next-line no-console
+    console.error(`No user with id ${id}`);
+    return null;
   };
 
   const authUser = computed(() => user(authUserId));
