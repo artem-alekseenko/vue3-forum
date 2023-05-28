@@ -1,5 +1,6 @@
 <script setup>
 import { useUsersStore } from '@/stores/UsersStore';
+import { ref, watchEffect } from 'vue';
 
 const props = defineProps({
   threads: {
@@ -9,7 +10,16 @@ const props = defineProps({
 });
 
 const usersStore = useUsersStore();
-const userById = (userId) => usersStore.getUserById(userId);
+const users = ref({});
+watchEffect(async () => {
+  await Promise.all(
+    props.threads.map(async (thread) => {
+      if (!users.value[thread.userId]) {
+        users.value[thread.userId] = await usersStore.fetchUser(thread.userId);
+      }
+    }),
+  );
+});
 </script>
 
 <template>
@@ -23,7 +33,7 @@ const userById = (userId) => usersStore.getUserById(userId);
                     <router-link :to="{name: 'ThreadShow', params: {id: thread.id}}">{{ thread.title }}</router-link>
                   </p>
                 <p class="text-faded text-xsmall">
-                  By <a href="#">{{ userById(thread.userId).name }}</a>, <AppDate :timestamp="thread.publishedAt" />.
+                  By <a href="#">{{ users[thread.userId].name }}</a>, <AppDate :timestamp="thread.publishedAt" />.
                 </p>
               </div>
 
@@ -32,11 +42,11 @@ const userById = (userId) => usersStore.getUserById(userId);
                     {{ thread.repliesCount }} replies
                   </p>
 
-                  <img class="avatar-medium" :src="userById(thread.userId).avatar" alt="">
+                  <img class="avatar-medium" :src="users[thread.userId].avatar" alt="">
 
                   <div>
                       <p class="text-xsmall">
-                          <a href="#">{{ userById(thread.userId).name }}</a>
+                          <a href="#">{{ users[thread.userId].name }}</a>
                       </p>
                       <p class="text-xsmall text-faded">
                         <AppDate :timestamp="thread.publishedAt" />
@@ -47,7 +57,3 @@ const userById = (userId) => usersStore.getUserById(userId);
 
       </div>
 </template>
-
-<style scoped>
-
-</style>
