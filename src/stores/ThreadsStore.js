@@ -35,6 +35,10 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   const thread = async (id) => {
     const threadFromDb = await fetchThread(id);
 
+    if (!threadFromDb) {
+      return null;
+    }
+
     const authorPromise = useUsersStore().getUserById(threadFromDb.userId);
     const author = await authorPromise;
 
@@ -105,7 +109,6 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   };
 
   return {
-    threads,
     getThreadById,
     thread,
     getThreadsByForumId,
