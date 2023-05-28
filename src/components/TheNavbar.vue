@@ -1,13 +1,20 @@
 <script setup>
-import { storeToRefs } from 'pinia';
 import { useUsersStore } from '@/stores/UsersStore';
+import { ref, watchEffect } from 'vue';
 
-const { authUser } = storeToRefs(useUsersStore());
+const authUser = ref(null);
+const usersStore = useUsersStore();
+watchEffect(async () => {
+  authUser.value = await usersStore.authUser;
+});
 </script>
 
 <template>
-  <header class="header" id="header">
-
+  <header
+      v-if="authUser"
+      class="header"
+      id="header"
+  >
     <router-link :to="{name: 'Home'}" class="logo">
       <img src="../assets/svg/vueschool-logo.svg">
     </router-link>
