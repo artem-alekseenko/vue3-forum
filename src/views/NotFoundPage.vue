@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <div class="col-full text-center">
     <h1>Not Found</h1>
