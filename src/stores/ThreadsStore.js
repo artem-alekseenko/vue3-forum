@@ -8,7 +8,12 @@ import { useForumsStore } from '@/stores/ForumsStore';
 import { usePostsStore } from '@/stores/PostsStore';
 import { findById, makeAppendChildToParent, upsert } from '@/helpers';
 import {
-  doc, getDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 
@@ -39,7 +44,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
       return null;
     }
 
-    const authorPromise = useUsersStore().getUserById(threadFromDb.userId);
+    const authorPromise = useUsersStore().fetchUser(threadFromDb.userId);
     const author = await authorPromise;
 
     return {
@@ -58,8 +63,25 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
 
   // eslint-disable-next-line no-shadow
   const getThreadsByForumId = (id) => threads.filter((thread) => thread.forumId === id);
-  // eslint-disable-next-line no-shadow
-  const getThreadsByUserId = (id) => threads.filter((thread) => thread.userId === id);
+
+  const getThreadsByUserId = async (id) => {
+    const threadsCollection = collection(db, 'threads');
+    const threadsQuery = query(
+      threadsCollection,
+      where('userId', '==', id),
+    );
+    const threadsSnapshot = await getDocs(threadsQuery);
+
+    const threadsPromises = threadsSnapshot.docs.map(async (threadDoc) => {
+      const data = threadDoc.data();
+      return {
+        id: threadDoc.id,
+        ...data,
+      };
+    });
+
+    return Promise.all(threadsPromises);
+  };
 
   const prepareThread = ({ title, forumId }) => {
     const { authUser } = useUsersStore();
@@ -109,7 +131,6 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   };
 
   return {
-    getThreadById,
     thread,
     getThreadsByForumId,
     getThreadsByUserId,
