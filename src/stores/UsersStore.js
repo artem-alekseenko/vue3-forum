@@ -5,15 +5,13 @@ import sourceData from '@/data.json';
 import { usePostsStore } from '@/stores/PostsStore';
 // eslint-disable-next-line import/no-cycle
 import { useThreadsStore } from '@/stores/ThreadsStore';
-import { findById, upsert } from '@/helpers';
+import { upsert } from '@/helpers';
 import { db } from '@/config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 export const useUsersStore = defineStore('UsersStore', () => {
   const users = reactive(sourceData.users);
   const authUserId = '7uVPJS9GHoftN58Z2MXCYDqmNAh2';
-
-  const getUserById = (id) => findById(users, id);
 
   const fetchUser = async (id) => {
     const userDocRef = doc(db, 'users', id);
@@ -63,6 +61,6 @@ export const useUsersStore = defineStore('UsersStore', () => {
   const setUser = async (user) => upsert(users, user);
 
   return {
-    users, fetchUser, user, authUser, getUserById, setUser,
+    users, fetchUser, user, authUser, setUser,
   };
 });
