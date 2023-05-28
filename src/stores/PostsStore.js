@@ -18,7 +18,10 @@ export const usePostsStore = defineStore('PostsStore', () => {
 
   const getPostsByThreadId = async (threadId) => {
     const postsCollection = collection(db, 'posts');
-    const postsQuery = query(postsCollection, where('threadId', '==', threadId));
+    const postsQuery = query(
+      postsCollection,
+      where('threadId', '==', threadId),
+    );
     const postsSnapshot = await getDocs(postsQuery);
 
     const promises = postsSnapshot.docs.map(async (document) => {

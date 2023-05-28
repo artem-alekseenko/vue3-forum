@@ -14,14 +14,12 @@ const props = defineProps({
 const forum = ref(null);
 const forumsStore = useForumsStore();
 const forumPromise = forumsStore.forum(props.id);
-
-const threadsStore = useThreadsStore();
-const threads = ref([]);
-
 watchEffect(async () => {
   forum.value = await forumPromise;
 });
 
+const threadsStore = useThreadsStore();
+const threads = ref([]);
 watchEffect(async () => {
   if (forum.value?.threadIds) {
     const threadPromises = await forum.value.threadIds.map((threadId) => threadsStore.thread(threadId));

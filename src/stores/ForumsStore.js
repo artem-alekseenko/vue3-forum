@@ -40,6 +40,6 @@ export const useForumsStore = defineStore('ForumsStore', () => {
   const getForumsByCategoryId = (id) => forums.filter((forum) => forum.categoryId === id);
 
   return {
-    forums, forum, getForumsByCategoryId, appendThreadToForum,
+    forum, getForumsByCategoryId, appendThreadToForum,
   };
 });
