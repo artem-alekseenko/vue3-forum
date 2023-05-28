@@ -15,33 +15,46 @@ export const useUsersStore = defineStore('UsersStore', () => {
 
   const getUserById = (id) => findById(users, id);
 
-  const user = async (id) => {
+  const fetchUser = async (id) => {
     const userDocRef = doc(db, 'users', id);
     const userDocSnap = await getDoc(userDocRef);
     if (userDocSnap.exists()) {
       const res = userDocSnap.data();
-      const posts = await usePostsStore().getPostsByUserId(id);
-      const threads = await useThreadsStore().getThreadsByUserId(id);
       return {
         id: userDocSnap.id,
         ...res,
-        get posts() {
-          return posts;
-        },
-        get postsCount() {
-          return posts.length;
-        },
-        get threads() {
-          return threads;
-        },
-        get threadsCount() {
-          return threads.length;
-        },
       };
     }
     // eslint-disable-next-line no-console
     console.error(`No user with id ${id}`);
     return null;
+  };
+
+  const user = async (id) => {
+    const userFromDb = await fetchUser(id);
+
+    if (!userFromDb) {
+      return null;
+    }
+
+    const posts = await usePostsStore().getPostsByUserId(id);
+    const threads = await useThreadsStore().getThreadsByUserId(id);
+
+    return {
+      ...userFromDb,
+      get posts() {
+        return posts;
+      },
+      get postsCount() {
+        return posts.length;
+      },
+      get threads() {
+        return threads;
+      },
+      get threadsCount() {
+        return threads.length;
+      },
+    };
   };
 
   const authUser = computed(() => user(authUserId));
@@ -50,6 +63,6 @@ export const useUsersStore = defineStore('UsersStore', () => {
   const setUser = async (user) => upsert(users, user);
 
   return {
-    users, user, authUser, getUserById, setUser,
+    users, fetchUser, user, authUser, getUserById, setUser,
   };
 });
