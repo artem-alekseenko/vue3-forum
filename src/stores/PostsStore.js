@@ -34,7 +34,25 @@ export const usePostsStore = defineStore('PostsStore', () => {
 
     return Promise.all(promises);
   };
-  const getPostsByUserId = (userId) => posts.filter((post) => post.userId === userId);
+
+  const getPostsByUserId = async (userId) => {
+    const postsCollection = collection(db, 'posts');
+    const postsQuery = query(
+      postsCollection,
+      where('userId', '==', userId),
+    );
+    const postsSnapshot = await getDocs(postsQuery);
+
+    const postsPromises = postsSnapshot.docs.map(async (postDoc) => {
+      const data = postDoc.data();
+      return {
+        id: postDoc.id,
+        ...data,
+      };
+    });
+
+    return Promise.all(postsPromises);
+  };
 
   const preparePost = ({ text, threadId }) => {
     const usersStore = useUsersStore();
