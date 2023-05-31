@@ -1,15 +1,10 @@
-import { reactive } from 'vue';
 import { defineStore } from 'pinia';
-import sourceData from '@/data.json';
-import { makeAppendChildToParent } from '@/helpers';
 import { db } from '@/config/firebase';
 import {
-  collection, doc, getDoc, getDocs, query, where,
+  arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc, where,
 } from 'firebase/firestore';
 
 export const useForumsStore = defineStore('ForumsStore', () => {
-  const forums = reactive(sourceData.forums);
-
   const fetchForum = async (id) => {
     const forumDocRef = doc(db, 'forums', id);
     const forumDocSnap = await getDoc(forumDocRef);
@@ -36,7 +31,13 @@ export const useForumsStore = defineStore('ForumsStore', () => {
     };
   };
 
-  const appendThreadToForum = makeAppendChildToParent({ parent: forums, child: 'threads' });
+  const appendThreadToForum = async ({ forumId, threadId }) => {
+    const forumDocRef = doc(db, 'forums', forumId);
+
+    await updateDoc(forumDocRef, {
+      threads: arrayUnion(threadId),
+    });
+  };
 
   const getForumsByCategoryId = async (categoryId) => {
     const forumsCollection = collection(db, 'forums');
