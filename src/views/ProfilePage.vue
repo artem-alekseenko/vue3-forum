@@ -12,16 +12,26 @@ const props = defineProps({
   },
 });
 
+const isLoading = ref(true);
+
 const user = ref(null);
 const usersStore = useUsersStore();
 watchEffect(async () => {
-  user.value = await usersStore.authUser;
+  user.value = await usersStore.getAuthUser();
+  isLoading.value = false;
+});
+watchEffect(async () => {
+  if (!props.edit) {
+    isLoading.value = true;
+    user.value = await usersStore.getAuthUser();
+    isLoading.value = false;
+  }
 });
 </script>
 
 <template>
   <div
-      v-if="!user"
+      v-if="isLoading"
       class="text-center">
     Loading...
   </div>

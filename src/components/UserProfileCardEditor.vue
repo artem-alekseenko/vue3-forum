@@ -14,7 +14,7 @@ const activeUser = { ...props.user };
 const router = useRouter();
 
 const save = () => {
-  useUsersStore().setUser(activeUser);
+  useUsersStore().saveUser(activeUser);
   router.push({ name: 'Profile' });
 };
 
