@@ -5,10 +5,10 @@ import sourceData from '@/data.json';
 import { useThreadsStore } from '@/stores/ThreadsStore';
 // eslint-disable-next-line import/no-cycle
 import { useUsersStore } from '@/stores/UsersStore';
-import { findById, upsert } from '@/helpers';
+import { findById } from '@/helpers';
 import { db } from '@/config/firebase';
 import {
-  collection, getDocs, query, where,
+  collection, getDocs, query, where, addDoc,
 } from 'firebase/firestore';
 
 export const usePostsStore = defineStore('PostsStore', () => {
@@ -54,30 +54,22 @@ export const usePostsStore = defineStore('PostsStore', () => {
     return Promise.all(postsPromises);
   };
 
-  const preparePost = ({ text, threadId }) => {
-    const usersStore = useUsersStore();
-    const { authUser } = usersStore;
-    const postId = `post_${Math.random()}`;
-
-    return {
-      id: postId,
-      publishedAt: Math.floor(Date.now() / 1000),
-      userId: authUser.id,
-      text,
-      threadId,
-    };
-  };
-
-  const setPost = async (post) => upsert(posts, post);
+  const preparePost = ({ text, threadId }) => ({
+    publishedAt: Math.floor(Date.now() / 1000),
+    userId: useUsersStore().authUserId,
+    text,
+    threadId,
+  });
 
   const createPost = async ({ text, threadId }) => {
     const post = preparePost({ text, threadId });
 
-    await setPost(post);
+    const postsCollection = collection(db, 'posts');
+    const newPostDocRef = await addDoc(postsCollection, post);
 
     const threadsStore = useThreadsStore();
-    threadsStore.appendPostToThread({ parentId: threadId, childId: post.id });
-    threadsStore.appendContributorToThread({ parentId: threadId, childId: post.userId });
+    await threadsStore.appendPostToThread({ threadId, childId: newPostDocRef.id });
+    await threadsStore.appendContributorToThread({ threadId, userId: post.userId });
   };
 
   return {
