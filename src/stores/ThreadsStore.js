@@ -6,7 +6,7 @@ import { useUsersStore } from '@/stores/UsersStore';
 import { useForumsStore } from '@/stores/ForumsStore';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
-import { findById, makeAppendChildToParent, upsert } from '@/helpers';
+import { findById, upsert } from '@/helpers';
 import {
   collection,
   doc,
@@ -14,6 +14,8 @@ import {
   getDocs,
   query,
   where,
+  updateDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 
@@ -99,9 +101,21 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   // eslint-disable-next-line no-shadow
   const setThread = async (thread) => upsert(threads, thread);
 
-  const appendPostToThread = makeAppendChildToParent({ parent: threads, child: 'posts' });
+  const appendPostToThread = async ({ threadId, childId }) => {
+    const threadDocRef = doc(db, 'threads', threadId);
 
-  const appendContributorToThread = makeAppendChildToParent({ parent: threads, child: 'contributors' });
+    await updateDoc(threadDocRef, {
+      posts: arrayUnion(childId),
+    });
+  };
+
+  const appendContributorToThread = async ({ threadId, userId }) => {
+    const threadDocRef = doc(db, 'threads', threadId);
+
+    await updateDoc(threadDocRef, {
+      contributors: arrayUnion(userId),
+    });
+  };
 
   const createThread = async ({ text, title, forumId }) => {
     // eslint-disable-next-line no-shadow
