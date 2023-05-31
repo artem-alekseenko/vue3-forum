@@ -65,6 +65,6 @@ export const useUsersStore = defineStore('UsersStore', () => {
   };
 
   return {
-    users, fetchUser, user, authUser, saveUser, getAuthUser,
+    users, fetchUser, user, authUser, saveUser, getAuthUser, authUserId,
   };
 });
