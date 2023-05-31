@@ -6,16 +6,9 @@ import { useUsersStore } from '@/stores/UsersStore';
 import { useForumsStore } from '@/stores/ForumsStore';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
-import { findById, upsert } from '@/helpers';
+import { findById } from '@/helpers';
 import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-  updateDoc,
-  arrayUnion,
+  collection, doc, getDoc, getDocs, query, where, updateDoc, arrayUnion, addDoc,
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 
@@ -85,21 +78,12 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
     return Promise.all(threadsPromises);
   };
 
-  const prepareThread = ({ title, forumId }) => {
-    const { authUser } = useUsersStore();
-    const threadId = `thread_${Math.random()}`;
-
-    return {
-      id: threadId,
-      publishedAt: Math.floor(Date.now() / 1000),
-      userId: authUser.id,
-      title,
-      forumId,
-    };
-  };
-
-  // eslint-disable-next-line no-shadow
-  const setThread = async (thread) => upsert(threads, thread);
+  const prepareThread = ({ title, forumId }) => ({
+    publishedAt: Math.floor(Date.now() / 1000),
+    userId: useUsersStore().authUserId,
+    title,
+    forumId,
+  });
 
   const appendPostToThread = async ({ threadId, childId }) => {
     const threadDocRef = doc(db, 'threads', threadId);
@@ -118,18 +102,20 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   };
 
   const createThread = async ({ text, title, forumId }) => {
-    // eslint-disable-next-line no-shadow
-    const thread = prepareThread({ title, forumId });
+    const newThread = prepareThread({ title, forumId });
 
-    await setThread(thread);
+    const threadsCollection = collection(db, 'threads');
+    const newThreadDocRef = await addDoc(threadsCollection, newThread);
+
+    newThread.id = newThreadDocRef.id;
 
     const forumsStore = useForumsStore();
-    forumsStore.appendThreadToForum({ parentId: forumId, childId: thread.id });
+    await forumsStore.appendThreadToForum({ forumId, threadId: newThread.id });
 
     const postsStore = usePostsStore();
-    await postsStore.createPost({ text, threadId: thread.id });
+    await postsStore.createPost({ text, threadId: newThread.id });
 
-    return getThreadById(thread.id);
+    return newThread;
   };
 
   const updateThread = async ({ id, title, text }) => {
