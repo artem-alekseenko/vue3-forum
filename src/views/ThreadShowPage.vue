@@ -21,13 +21,14 @@ watchEffect(async () => {
 
 const threadPosts = ref([]);
 const postsStore = usePostsStore();
-const threadPostsPromises = postsStore.getPostsByThreadId(props.id);
+const getThreadPosts = async () => postsStore.getPostsByThreadId(props.id);
 watchEffect(async () => {
-  threadPosts.value = await threadPostsPromises;
+  threadPosts.value = await getThreadPosts();
 });
 
 const addPost = async (text) => {
   await postsStore.createPost({ text, threadId: props.id });
+  threadPosts.value = await getThreadPosts();
 };
 </script>
 
