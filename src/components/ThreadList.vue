@@ -9,9 +9,12 @@ const props = defineProps({
   },
 });
 
+const isLoading = ref(true);
+
 const usersStore = useUsersStore();
 const users = ref({});
 watchEffect(async () => {
+  isLoading.value = true;
   await Promise.all(
     props.threads.map(async (thread) => {
       if (!users.value[thread.userId]) {
@@ -19,11 +22,16 @@ watchEffect(async () => {
       }
     }),
   );
+  isLoading.value = false;
 });
 </script>
 
 <template>
-      <div class="thread-list">
+      <div v-if="isLoading">Loading...</div>
+      <div
+          v-if="!isLoading"
+          class="thread-list"
+      >
 
           <h2 class="list-title">Threads</h2>
 
