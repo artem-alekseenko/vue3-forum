@@ -1,20 +1,31 @@
-import { reactive } from 'vue';
 import { defineStore } from 'pinia';
-import sourceData from '@/data.json';
 // eslint-disable-next-line import/no-cycle
 import { useThreadsStore } from '@/stores/ThreadsStore';
 // eslint-disable-next-line import/no-cycle
 import { useUsersStore } from '@/stores/UsersStore';
-import { findById } from '@/helpers';
 import { db } from '@/config/firebase';
 import {
-  collection, getDocs, query, where, addDoc,
+  collection, getDocs, query, where, addDoc, doc, getDoc, updateDoc,
 } from 'firebase/firestore';
 
 export const usePostsStore = defineStore('PostsStore', () => {
-  const posts = reactive(sourceData.posts);
-
-  const getPostById = (id) => findById(posts, id);
+  const fetchPost = async (id) => {
+    if (!id) {
+      return null;
+    }
+    const postDocRef = doc(db, 'posts', id);
+    const postDocSnap = await getDoc(postDocRef);
+    if (postDocSnap.exists()) {
+      const res = postDocSnap.data();
+      return {
+        id: postDocSnap.id,
+        ...res,
+      };
+    }
+    // eslint-disable-next-line no-console
+    console.error(`No post with id ${id}`);
+    return null;
+  };
 
   const getPostsByThreadId = async (threadId) => {
     const postsCollection = collection(db, 'posts');
@@ -72,7 +83,14 @@ export const usePostsStore = defineStore('PostsStore', () => {
     await threadsStore.appendContributorToThread({ threadId, userId: post.userId });
   };
 
+  const updatePost = async ({ id, text }) => {
+    const postDocRef = doc(db, 'posts', id);
+    await updateDoc(postDocRef, {
+      text,
+    });
+  };
+
   return {
-    posts, getPostById, getPostsByThreadId, getPostsByUserId, createPost,
+    getPostsByThreadId, getPostsByUserId, createPost, fetchPost, updatePost,
   };
 });
