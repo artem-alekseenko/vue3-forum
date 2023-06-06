@@ -1,6 +1,5 @@
-import { computed, reactive } from 'vue';
+import { computed } from 'vue';
 import { defineStore } from 'pinia';
-import sourceData from '@/data.json';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
 // eslint-disable-next-line import/no-cycle
@@ -9,7 +8,6 @@ import { db } from '@/config/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 export const useUsersStore = defineStore('UsersStore', () => {
-  const users = reactive(sourceData.users);
   const authUserId = '7uVPJS9GHoftN58Z2MXCYDqmNAh2';
 
   const fetchUser = async (id) => {
@@ -65,6 +63,6 @@ export const useUsersStore = defineStore('UsersStore', () => {
   };
 
   return {
-    users, fetchUser, user, authUser, saveUser, getAuthUser, authUserId,
+    fetchUser, user, authUser, saveUser, getAuthUser, authUserId,
   };
 });
