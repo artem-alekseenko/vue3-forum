@@ -20,13 +20,10 @@ watchEffect(async () => {
 
 const threadsStore = useThreadsStore();
 const threads = ref([]);
+const threadsPromise = threadsStore.getThreadsByForumId(props.id);
 watchEffect(async () => {
-  if (forum.value?.threadIds) {
-    const threadPromises = await forum.value.threadIds.map((threadId) => threadsStore.thread(threadId));
-    threads.value = await Promise.all(threadPromises);
-  }
+  threads.value = await threadsPromise;
 });
-
 </script>
 
 <template>
