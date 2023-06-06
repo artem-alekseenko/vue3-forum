@@ -1,23 +1,19 @@
-import { reactive } from 'vue';
 import { defineStore } from 'pinia';
-import sourceData from '@/data.json';
 // eslint-disable-next-line import/no-cycle
 import { useUsersStore } from '@/stores/UsersStore';
 import { useForumsStore } from '@/stores/ForumsStore';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
-import { findById } from '@/helpers';
 import {
   collection, doc, getDoc, getDocs, query, where, updateDoc, arrayUnion, addDoc,
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 
 export const useThreadsStore = defineStore('ThreadsStore', () => {
-  const threads = reactive(sourceData.threads);
-
-  const getThreadById = (id) => findById(threads, id);
-
   const fetchThread = async (id) => {
+    if (!id) {
+      return null;
+    }
     const threadDocRef = doc(db, 'threads', id);
     const threadDocSnap = await getDoc(threadDocRef);
     if (threadDocSnap.exists()) {
@@ -56,8 +52,24 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
     };
   };
 
-  // eslint-disable-next-line no-shadow
-  const getThreadsByForumId = (id) => threads.filter((thread) => thread.forumId === id);
+  const getThreadsByForumId = async (id) => {
+    const threadsCollection = collection(db, 'threads');
+    const threadsQuery = query(
+      threadsCollection,
+      where('forumId', '==', id),
+    );
+    const threadsSnapshot = await getDocs(threadsQuery);
+
+    const threadsPromises = threadsSnapshot.docs.map(async (threadDoc) => {
+      const data = threadDoc.data();
+      return {
+        id: threadDoc.id,
+        ...data,
+      };
+    });
+
+    return Promise.all(threadsPromises);
+  };
 
   const getThreadsByUserId = async (id) => {
     const threadsCollection = collection(db, 'threads');
@@ -118,16 +130,18 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
     return newThread;
   };
 
-  const updateThread = async ({ id, title, text }) => {
-    // eslint-disable-next-line no-shadow
-    const thread = getThreadById(id);
-    thread.title = title;
+  const updateThread = async ({
+    threadId, postId, title, text,
+  }) => {
+    const threadDocRef = doc(db, 'threads', threadId);
+    await updateDoc(threadDocRef, { title });
 
     const postsStore = usePostsStore();
-    const post = postsStore.getPostById(thread.posts[0]);
-    post.text = text;
+    await postsStore.updatePost({ id: postId, text });
 
-    return thread;
+    return {
+      id: threadId,
+    };
   };
 
   return {
