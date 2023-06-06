@@ -228,10 +228,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.41.0":
-  version: 8.41.0
-  resolution: "@eslint/js@npm:8.41.0"
-  checksum: af013d70fe8d0429cdf5cd8b5dcc6fc384ed026c1eccb0cfe30f5849b968ab91645111373fd1b83282b38955b1bdfbe667c1a7dbda3b06cae753521223cad775
+"@eslint/js@npm:8.42.0":
+  version: 8.42.0
+  resolution: "@eslint/js@npm:8.42.0"
+  checksum: 750558843ac458f7da666122083ee05306fc087ecc1e5b21e7e14e23885775af6c55bcc92283dff1862b7b0d8863ec676c0f18c7faf1219c722fe91a8ece56b6
   languageName: node
   linkType: hard
 
@@ -869,14 +869,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/config-array@npm:^0.11.8":
-  version: 0.11.8
-  resolution: "@humanwhocodes/config-array@npm:0.11.8"
+"@humanwhocodes/config-array@npm:^0.11.10":
+  version: 0.11.10
+  resolution: "@humanwhocodes/config-array@npm:0.11.10"
   dependencies:
     "@humanwhocodes/object-schema": ^1.2.1
     debug: ^4.1.1
     minimatch: ^3.0.5
-  checksum: 0fd6b3c54f1674ce0a224df09b9c2f9846d20b9e54fabae1281ecfc04f2e6ad69bf19e1d6af6a28f88e8aa3990168b6cb9e1ef755868c3256a630605ec2cb1d3
+  checksum: 1b1302e2403d0e35bc43e66d67a2b36b0ad1119efc704b5faff68c41f791a052355b010fb2d27ef022670f550de24cd6d08d5ecf0821c16326b7dcd0ee5d5d8a
   languageName: node
   linkType: hard
 
@@ -1278,57 +1278,57 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/expect@npm:0.31.3":
-  version: 0.31.3
-  resolution: "@vitest/expect@npm:0.31.3"
+"@vitest/expect@npm:0.31.4":
+  version: 0.31.4
+  resolution: "@vitest/expect@npm:0.31.4"
   dependencies:
-    "@vitest/spy": 0.31.3
-    "@vitest/utils": 0.31.3
+    "@vitest/spy": 0.31.4
+    "@vitest/utils": 0.31.4
     chai: ^4.3.7
-  checksum: 7f81a6d50debc76e78e861c07bcf432b302b59cfe76d2c64f53feb0354807f18cf4aa74826d5ff1209e9feec10b5e742ccc6f1457bc30fa804885afbf55ccf9b
+  checksum: 589d438b0a6daade1e26c219f9eff5113efc8e0ab465eb2fb8483449c83e5e59e60956286db631afac41060c96dd1c880d4a29781bcd57466e452c4a7cc154b0
   languageName: node
   linkType: hard
 
-"@vitest/runner@npm:0.31.3":
-  version: 0.31.3
-  resolution: "@vitest/runner@npm:0.31.3"
+"@vitest/runner@npm:0.31.4":
+  version: 0.31.4
+  resolution: "@vitest/runner@npm:0.31.4"
   dependencies:
-    "@vitest/utils": 0.31.3
+    "@vitest/utils": 0.31.4
     concordance: ^5.0.4
     p-limit: ^4.0.0
     pathe: ^1.1.0
-  checksum: 341dc80120757331f5c922fc08f9275590514a920cb8c4d6b00fdcb46a3cdcacd894ab4d389757d1b2d2419c9a3171e01c4fd8b2a76b289a292a840e6a58a42d
+  checksum: c85dee7570cba7caf7cbfcc9292848291a802e14b76b7dc2ff962e9b34c280197f8d83facf9b6278a2ca7d8a71d98598236fa400ca70371865e2c1a4f15c326f
   languageName: node
   linkType: hard
 
-"@vitest/snapshot@npm:0.31.3":
-  version: 0.31.3
-  resolution: "@vitest/snapshot@npm:0.31.3"
+"@vitest/snapshot@npm:0.31.4":
+  version: 0.31.4
+  resolution: "@vitest/snapshot@npm:0.31.4"
   dependencies:
     magic-string: ^0.30.0
     pathe: ^1.1.0
     pretty-format: ^27.5.1
-  checksum: 56782a1bafcab545943c1a22fa9a8308ab255817d16782628e0249013257d2402dd3551412ac808eef3a3b33ca889a3eeb5d4f0edc56a112fe315c617bb22eb9
+  checksum: c60b91d02fb3b1907c47c472cd1e77deca6191259b86a7e68fcd85a2fc2084064ce50bbecd176abddf8539d06b6e9b35b0dfb0e491061ed0753f5f4e9c037a90
   languageName: node
   linkType: hard
 
-"@vitest/spy@npm:0.31.3":
-  version: 0.31.3
-  resolution: "@vitest/spy@npm:0.31.3"
+"@vitest/spy@npm:0.31.4":
+  version: 0.31.4
+  resolution: "@vitest/spy@npm:0.31.4"
   dependencies:
     tinyspy: ^2.1.0
-  checksum: 42ded8f530c8930f98c4b7bee4a9ad4b3d63708ac8641b6a4fe49945fb27619492bffebd236a9812f4adc18885a24c74c95396d15660757907cc27dc6e9c6fcc
+  checksum: 9e904d42a5eac1c8679047014e65584abb6b7e1862fef0f8829559e79173f7f8c350b253bd7771d806921eff959fc124a57a9016a71574bd2ff43215e5cdd3f8
   languageName: node
   linkType: hard
 
-"@vitest/utils@npm:0.31.3":
-  version: 0.31.3
-  resolution: "@vitest/utils@npm:0.31.3"
+"@vitest/utils@npm:0.31.4":
+  version: 0.31.4
+  resolution: "@vitest/utils@npm:0.31.4"
   dependencies:
     concordance: ^5.0.4
     loupe: ^2.3.6
     pretty-format: ^27.5.1
-  checksum: 08f214ef0144e217af272d106c0e647f4719acb80bdebda1b20236477dcdcf9711729067e54da7f3dc2e784b460d9bfea0a6ce4b328791f0569b160ae33c50ed
+  checksum: 769e1620e34c05b35fd58453403f5abd7775160dbb9ed908e9a12c65e740d5415f9a9ddeab42b9641a771e0d57bc0ce44abc70330b2ca36be073a0f509e1ab4b
   languageName: node
   linkType: hard
 
@@ -2091,10 +2091,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.11.7":
-  version: 1.11.7
-  resolution: "dayjs@npm:1.11.7"
-  checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
+"dayjs@npm:1.11.8":
+  version: 1.11.8
+  resolution: "dayjs@npm:1.11.8"
+  checksum: 4fe04b6df98ba6e5f89b49d80bba603cbf01e21a1b4a24ecb163c94c0ba5324a32ac234a139cee654f89d5277a2bcebca5347e6676c28a0a6d1a90f1d34a42b8
   languageName: node
   linkType: hard
 
@@ -2591,15 +2591,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.41.0":
-  version: 8.41.0
-  resolution: "eslint@npm:8.41.0"
+"eslint@npm:8.42.0":
+  version: 8.42.0
+  resolution: "eslint@npm:8.42.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.2.0
     "@eslint-community/regexpp": ^4.4.0
     "@eslint/eslintrc": ^2.0.3
-    "@eslint/js": 8.41.0
-    "@humanwhocodes/config-array": ^0.11.8
+    "@eslint/js": 8.42.0
+    "@humanwhocodes/config-array": ^0.11.10
     "@humanwhocodes/module-importer": ^1.0.1
     "@nodelib/fs.walk": ^1.2.8
     ajv: ^6.10.0
@@ -2636,7 +2636,7 @@ __metadata:
     text-table: ^0.2.0
   bin:
     eslint: bin/eslint.js
-  checksum: 09979a6f8451dcc508a7005b6670845c8a518376280b3fd96657a406b8b6ef29d0e480d1ba11b4eb48da93d607e0c55c9b877676fe089d09973ec152354e23b2
+  checksum: 07105397b5f2ff4064b983b8971e8c379ec04b1dfcc9d918976b3e00377189000161dac991d82ba14f8759e466091b8c71146f602930ca810c290ee3fcb3faf0
   languageName: node
   linkType: hard
 
@@ -2905,8 +2905,8 @@ __metadata:
     "@playwright/test": 1.34.3
     "@vitejs/plugin-vue": 4.2.3
     "@vue/test-utils": 2.3.2
-    dayjs: 1.11.7
-    eslint: 8.41.0
+    dayjs: 1.11.8
+    eslint: 8.42.0
     eslint-config-airbnb-base: 15.0.0
     eslint-import-resolver-alias: 1.1.2
     eslint-plugin-import: 2.27.5
@@ -2917,7 +2917,7 @@ __metadata:
     pinia: 2.1.3
     vite: 4.3.9
     vite-plugin-eslint: 1.8.1
-    vitest: 0.31.3
+    vitest: 0.31.4
     vue: 3.3.4
     vue-router: 4.2.2
   languageName: unknown
@@ -5539,9 +5539,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-node@npm:0.31.3":
-  version: 0.31.3
-  resolution: "vite-node@npm:0.31.3"
+"vite-node@npm:0.31.4":
+  version: 0.31.4
+  resolution: "vite-node@npm:0.31.4"
   dependencies:
     cac: ^6.7.14
     debug: ^4.3.4
@@ -5551,7 +5551,7 @@ __metadata:
     vite: ^3.0.0 || ^4.0.0
   bin:
     vite-node: vite-node.mjs
-  checksum: 236031fb78a8693c8210447d2ee19930277def94463274b52b98e99bf2149b6585657fa8733cdc3ef2df364bf2b3e60adecb7b415aa747d43ae8b9961cb79f2e
+  checksum: 822457481fd58915eb41f18237d99ce163f7a45cc57ba0739876f6201f287c904ed00439c351a1a0fef82e4f256db06f4ae238c0519d4121e1ad14bc5dd4a39f
   languageName: node
   linkType: hard
 
@@ -5643,18 +5643,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:0.31.3":
-  version: 0.31.3
-  resolution: "vitest@npm:0.31.3"
+"vitest@npm:0.31.4":
+  version: 0.31.4
+  resolution: "vitest@npm:0.31.4"
   dependencies:
     "@types/chai": ^4.3.5
     "@types/chai-subset": ^1.3.3
     "@types/node": "*"
-    "@vitest/expect": 0.31.3
-    "@vitest/runner": 0.31.3
-    "@vitest/snapshot": 0.31.3
-    "@vitest/spy": 0.31.3
-    "@vitest/utils": 0.31.3
+    "@vitest/expect": 0.31.4
+    "@vitest/runner": 0.31.4
+    "@vitest/snapshot": 0.31.4
+    "@vitest/spy": 0.31.4
+    "@vitest/utils": 0.31.4
     acorn: ^8.8.2
     acorn-walk: ^8.2.0
     cac: ^6.7.14
@@ -5670,7 +5670,7 @@ __metadata:
     tinybench: ^2.5.0
     tinypool: ^0.5.0
     vite: ^3.0.0 || ^4.0.0
-    vite-node: 0.31.3
+    vite-node: 0.31.4
     why-is-node-running: ^2.2.2
   peerDependencies:
     "@edge-runtime/vm": "*"
@@ -5700,7 +5700,7 @@ __metadata:
       optional: true
   bin:
     vitest: vitest.mjs
-  checksum: 928753731cdaa365ce2dade36710793089d14d137ccb403052e4793c1a096d446ed576018d78e5b2169fc0898a0b1066cab42854f53090035a5447274fe4858b
+  checksum: 61493711e349d33b0b42eb7ea2b0c348683256d87aeddb6df266da66193666b737d03c0ea74bb9bf2cd79ee1ecca5a034aabad3bba6ff66898bfdd2b473d8663
   languageName: node
   linkType: hard
 
