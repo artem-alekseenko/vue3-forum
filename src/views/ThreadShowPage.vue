@@ -33,20 +33,23 @@ const addPost = async (text) => {
 </script>
 
 <template>
-    <div
-        v-if="!thread"
-        class="text-center"
-    >
-      Loading...
-    </div>
-    <template v-if="thread">
-      <div class="col-large push-top">
-      <h1>
+  <div
+      v-if="!thread"
+      class="text-center"
+  >
+    Loading...
+  </div>
+  <template v-if="thread">
+    <div class="col-large push-top">
+      <div>
+        <h1>
+          {{ thread.title }}
+        </h1>
+
         <router-link :to="{ name: 'ThreadEdit', id: this.id }">
           <button class="btn-green btn-small">Edit Thread</button>
         </router-link>
-      </h1>
-
+      </div>
       <p>
         By <a href="#" class="link-unstyled">{{thread.author?.name}}</a>, <AppDate :timestamp="thread.publishedAt" />.
         <span
@@ -57,9 +60,9 @@ const addPost = async (text) => {
         </span>
       </p>
 
-        <post-list :posts="threadPosts" />
+      <post-list :posts="threadPosts" />
 
-        <post-editor @save="addPost" />
+      <post-editor @save="addPost" />
     </div>
-    </template>
+  </template>
 </template>
