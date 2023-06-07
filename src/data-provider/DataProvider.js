@@ -1,5 +1,6 @@
 import { useCategoriesStore } from '@/stores/CategoriesStore';
 import { useForumsStore } from '@/stores/ForumsStore';
+import { useUsersStore } from '@/stores/UsersStore';
 
 const singletonEnforcer = Symbol('singletonEnforcer');
 let dataProviderInstance = null;
@@ -12,6 +13,7 @@ export class DataProvider {
 
     this.categoriesStore = useCategoriesStore();
     this.forumsStore = useForumsStore();
+    this.usersStore = useUsersStore();
   }
 
   async getAllCategories() {
@@ -28,6 +30,10 @@ export class DataProvider {
 
   async getForumsByCategoryId(categoryId) {
     return this.forumsStore.getForumsByCategoryId(categoryId);
+  }
+
+  async getAuthUser() {
+    return this.usersStore.getAuthUser();
   }
 
   static getInstance() {
