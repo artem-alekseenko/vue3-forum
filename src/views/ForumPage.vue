@@ -20,7 +20,7 @@ watchEffect(async () => {
 
 const threadsStore = useThreadsStore();
 const threads = ref([]);
-const threadsPromise = threadsStore.getThreadsByForumId(props.id);
+const threadsPromise = threadsStore.fetchThreadsByForumId(props.id);
 watchEffect(async () => {
   threads.value = await threadsPromise;
 });
