@@ -52,7 +52,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
     };
   };
 
-  const getThreadsByForumId = async (id) => {
+  const fetchThreadsByForumId = async (id) => {
     const threadsCollection = collection(db, 'threads');
     const threadsQuery = query(
       threadsCollection,
@@ -64,6 +64,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
       const data = threadDoc.data();
       return {
         id: threadDoc.id,
+        repliesCount: (data.posts?.length || 1) - 1,
         ...data,
       };
     });
@@ -146,7 +147,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
 
   return {
     thread,
-    getThreadsByForumId,
+    fetchThreadsByForumId,
     getThreadsByUserId,
     createThread,
     updateThread,
