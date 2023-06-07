@@ -1,8 +1,7 @@
 <script setup>
 import ForumList from '@/components/ForumList.vue';
-import { useCategoriesStore } from '@/stores/CategoriesStore';
-import { useForumsStore } from '@/stores/ForumsStore';
-import { ref, watchEffect } from 'vue';
+import { onBeforeMount, ref } from 'vue';
+import { getCategoryById, getForumsByCategoryId } from '@/data-provider/DataProvider';
 
 const props = defineProps({
   id: {
@@ -11,28 +10,25 @@ const props = defineProps({
   },
 });
 
-const category = ref(null);
-const categoriesStore = useCategoriesStore();
-const categoryPromise = categoriesStore.category(props.id);
-watchEffect(async () => {
-  category.value = await categoryPromise;
-});
-
+const currentCategory = ref(null);
 const forums = ref([]);
-const forumsStore = useForumsStore();
-watchEffect(async () => {
-  if (category.value?.forums) {
-    const forumPromises = await category.value.forums.map((forumId) => forumsStore.forum(forumId));
-    forums.value = await Promise.all(forumPromises);
-  }
+
+onBeforeMount(async () => {
+  const [category, forumsData] = await Promise.all([
+    getCategoryById(props.id),
+    getForumsByCategoryId(props.id),
+  ]);
+
+  currentCategory.value = category;
+  forums.value = forumsData;
 });
 </script>
 
 <template>
-  <template v-if="category && forums">
-    <h1 class="push-top col-full">{{ category.name }}</h1>
+  <template v-if="currentCategory && forums">
+    <h1 class="push-top col-full">{{ currentCategory.name }}</h1>
     <ForumList
-        :title="category.name"
+        :title="currentCategory.name"
         :forums="forums"
     />
   </template>
