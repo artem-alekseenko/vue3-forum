@@ -1,7 +1,7 @@
 <script setup>
 import ForumList from '@/components/ForumList.vue';
 import { useForumsStore } from '@/stores/ForumsStore';
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 
 const props = defineProps({
   categories: {
@@ -12,7 +12,7 @@ const props = defineProps({
 
 const forumsStore = useForumsStore();
 const forums = ref(null);
-onMounted(async () => {
+onBeforeMount(async () => {
   const promises = props.categories.map((category) => forumsStore.getForumsByCategoryId(category.id));
   forums.value = await Promise.all(promises);
 });
