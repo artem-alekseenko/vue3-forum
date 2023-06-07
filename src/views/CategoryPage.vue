@@ -1,7 +1,7 @@
 <script setup>
 import ForumList from '@/components/ForumList.vue';
 import { onBeforeMount, ref } from 'vue';
-import { getCategoryById, getForumsByCategoryId } from '@/data-provider/DataProvider';
+import { DataProvider } from '@/data-provider/DataProvider';
 
 const props = defineProps({
   id: {
@@ -13,10 +13,12 @@ const props = defineProps({
 const currentCategory = ref(null);
 const forums = ref([]);
 
+const dataProvider = DataProvider.getInstance();
+
 onBeforeMount(async () => {
   const [category, forumsData] = await Promise.all([
-    getCategoryById(props.id),
-    getForumsByCategoryId(props.id),
+    dataProvider.getCategoryById(props.id),
+    dataProvider.getForumsByCategoryId(props.id),
   ]);
 
   currentCategory.value = category;
