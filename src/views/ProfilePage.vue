@@ -1,9 +1,9 @@
 <script setup>
 import PostList from '@/components/PostList.vue';
-import { useUsersStore } from '@/stores/UsersStore';
 import UserProfileCard from '@/components/UserProfileCard.vue';
 import UserProfileCardEditor from '@/components/UserProfileCardEditor.vue';
 import { ref, watchEffect } from 'vue';
+import { DataProvider } from '@/data-provider/DataProvider';
 
 const props = defineProps({
   edit: {
@@ -13,17 +13,18 @@ const props = defineProps({
 });
 
 const isLoading = ref(true);
-
 const user = ref(null);
-const usersStore = useUsersStore();
+
+const dataProvider = DataProvider.getInstance();
+
 watchEffect(async () => {
-  user.value = await usersStore.getAuthUser();
+  user.value = await dataProvider.getAuthUser();
   isLoading.value = false;
 });
 watchEffect(async () => {
   if (!props.edit) {
     isLoading.value = true;
-    user.value = await usersStore.getAuthUser();
+    user.value = await dataProvider.getAuthUser();
     isLoading.value = false;
   }
 });
