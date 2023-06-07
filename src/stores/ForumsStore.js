@@ -5,7 +5,7 @@ import {
 } from 'firebase/firestore';
 
 export const useForumsStore = defineStore('ForumsStore', () => {
-  const fetchForum = async (id) => {
+  const fetchForumById = async (id) => {
     const forumDocRef = doc(db, 'forums', id);
     const forumDocSnap = await getDoc(forumDocRef);
     if (forumDocSnap.exists()) {
@@ -21,7 +21,7 @@ export const useForumsStore = defineStore('ForumsStore', () => {
   };
 
   const forum = async (id) => {
-    const forumFromDb = await fetchForum(id);
+    const forumFromDb = await fetchForumById(id);
 
     return {
       ...forumFromDb,
