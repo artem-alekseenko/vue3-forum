@@ -1,20 +1,22 @@
 <script setup>
-import { useCategoriesStore } from '@/stores/CategoriesStore';
 import CategoryList from '@/components/CategoryList.vue';
-import { ref, watchEffect } from 'vue';
+import { onBeforeMount, ref } from 'vue';
+import { DataProvider } from '@/data-provider/DataProvider';
 
-const categories = ref(null);
-const categoriesStore = useCategoriesStore();
-watchEffect(async () => {
-  categories.value = await categoriesStore.categories();
+const allCategories = ref(null);
+
+const dataProvider = DataProvider.getInstance();
+
+onBeforeMount(async () => {
+  allCategories.value = await dataProvider.getAllCategories();
 });
 </script>
 
 <template>
   <h1 class="push-top col-full">Welcome to the Forum</h1>
   <CategoryList
-      v-if="categories"
-      :categories="categories"
+      v-if="allCategories"
+      :categories="allCategories"
   />
 </template>
 
