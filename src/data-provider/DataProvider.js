@@ -1,19 +1,39 @@
 import { useCategoriesStore } from '@/stores/CategoriesStore';
 import { useForumsStore } from '@/stores/ForumsStore';
 
-const forumsStore = useForumsStore();
-const categoriesStore = useCategoriesStore();
+const singletonEnforcer = Symbol('singletonEnforcer');
+let dataProviderInstance = null;
 
-export const getCategoryById = async (categoryId) => {
-  await categoriesStore.fetchCategoryById(categoryId);
+export class DataProvider {
+  constructor(enforcer) {
+    if (!enforcer) {
+      throw new Error('Cannot construct singleton');
+    }
 
-  return categoriesStore.currentCategory;
-};
+    this.categoriesStore = useCategoriesStore();
+    this.forumsStore = useForumsStore();
+  }
 
-export const getAllCategories = async () => {
-  await categoriesStore.fetchAllCategories();
+  async getAllCategories() {
+    await this.categoriesStore.fetchAllCategories();
 
-  return categoriesStore.allCategories;
-};
+    return this.categoriesStore.allCategories;
+  }
 
-export const getForumsByCategoryId = async (categoryId) => forumsStore.getForumsByCategoryId(categoryId);
+  async getCategoryById(categoryId) {
+    await this.categoriesStore.fetchCategoryById(categoryId);
+
+    return this.categoriesStore.currentCategory;
+  }
+
+  async getForumsByCategoryId(categoryId) {
+    return this.forumsStore.getForumsByCategoryId(categoryId);
+  }
+
+  static getInstance() {
+    if (!dataProviderInstance) {
+      dataProviderInstance = new DataProvider(singletonEnforcer);
+    }
+    return dataProviderInstance;
+  }
+}
