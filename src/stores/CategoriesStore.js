@@ -3,9 +3,15 @@ import {
   collection, doc, getDoc, getDocs,
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
+import { ref } from 'vue';
 
 export const useCategoriesStore = defineStore('CategoriesStore', () => {
-  const categories = async () => {
+  // state
+  const allCategories = ref([]);
+  const currentCategory = ref(null);
+
+  // actions
+  const fetchAllCategories = async () => {
     const categoriesCollection = collection(db, 'categories');
     const categoriesSnapshot = await getDocs(categoriesCollection);
 
@@ -17,23 +23,26 @@ export const useCategoriesStore = defineStore('CategoriesStore', () => {
       };
     });
 
-    return Promise.all(promises);
+    const res = await Promise.all(promises);
+    allCategories.value.push(...res);
   };
 
-  const category = async (id) => {
+  const fetchCategoryById = async (id) => {
     const categoryDocRef = doc(db, 'categories', id);
     const categoryDocSnap = await getDoc(categoryDocRef);
     if (categoryDocSnap.exists()) {
       const res = categoryDocSnap.data();
-      return {
+      currentCategory.value = {
         id: categoryDocSnap.id,
         ...res,
       };
+      return;
     }
     // eslint-disable-next-line no-console
     console.error(`No category with id ${id}`);
-    return null;
   };
 
-  return { categories, category };
+  return {
+    fetchAllCategories, fetchCategoryById, allCategories, currentCategory,
+  };
 });
