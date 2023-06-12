@@ -35,10 +35,13 @@ watch(
 </script>
 
 <template>
-  <div class="post-list">
+  <div
+    v-if="Object.keys(users).length"
+    class="post-list"
+  >
     <div class="post"
-         v-for="post in props.posts"
-         :key="post.id"
+      v-for="post in props.posts"
+      :key="post.id"
     >
       <template v-if="post && users[post.userId]">
         <div class="user-info">
