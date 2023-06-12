@@ -73,6 +73,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
     threadId,
   });
 
+  // TODO: create batched write
   const createPost = async ({ text, threadId }) => {
     const post = preparePost({ text, threadId });
 
