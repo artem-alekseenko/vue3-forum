@@ -1,6 +1,8 @@
 <script setup>
 import { useUsersStore } from '@/stores/UsersStore';
-import { ref, watchEffect } from 'vue';
+import {
+  onBeforeMount, ref, watch,
+} from 'vue';
 
 const props = defineProps({
   posts: {
@@ -11,7 +13,8 @@ const props = defineProps({
 
 const usersStore = useUsersStore();
 const users = ref({});
-watchEffect(async () => {
+
+onBeforeMount(async () => {
   await Promise.all(
     props.posts.map(async (post) => {
       if (!users.value[post.userId]) {
@@ -20,6 +23,15 @@ watchEffect(async () => {
     }),
   );
 });
+
+watch(
+  () => props.posts,
+  async () => {
+    const { authUserId } = usersStore;
+    users.value[authUserId] = await usersStore.user(authUserId);
+  },
+);
+
 </script>
 
 <template>
