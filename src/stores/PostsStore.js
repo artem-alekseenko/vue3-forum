@@ -5,7 +5,7 @@ import { useThreadsStore } from '@/stores/ThreadsStore';
 import { useUsersStore } from '@/stores/UsersStore';
 import { db } from '@/config/firebase';
 import {
-  collection, getDocs, query, where, addDoc, doc, getDoc, updateDoc,
+  collection, getDocs, query, where, addDoc, doc, getDoc, updateDoc, orderBy,
 } from 'firebase/firestore';
 
 export const usePostsStore = defineStore('PostsStore', () => {
@@ -32,6 +32,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
     const postsQuery = query(
       postsCollection,
       where('threadId', '==', threadId),
+      orderBy('publishedAt', 'asc'),
     );
     const postsSnapshot = await getDocs(postsQuery);
 
