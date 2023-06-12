@@ -11,6 +11,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['showEditor']);
+
 const usersStore = useUsersStore();
 const users = ref({});
 
@@ -22,6 +24,10 @@ onBeforeMount(async () => {
       }
     }),
   );
+});
+
+watch(users.value, () => {
+  emit('showEditor');
 });
 
 watch(

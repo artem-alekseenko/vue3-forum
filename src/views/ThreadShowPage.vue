@@ -12,6 +12,8 @@ const props = defineProps({
   },
 });
 
+const isEditorVisible = ref(false);
+
 const thread = ref(null);
 const threadsStore = useThreadsStore();
 const threadPromise = threadsStore.thread(props.id);
@@ -60,9 +62,15 @@ const addPost = async (text) => {
         </span>
       </p>
 
-      <post-list :posts="threadPosts" />
+      <post-list
+          :posts="threadPosts"
+          @show-editor="isEditorVisible = true"
+      />
 
-      <post-editor @save="addPost" />
+      <post-editor
+          v-if="isEditorVisible"
+          @save="addPost"
+      />
     </div>
   </template>
 </template>
