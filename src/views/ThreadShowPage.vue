@@ -64,7 +64,7 @@ const addPost = async (text) => {
 
       <post-list
           :posts="threadPosts"
-          @show-editor="isEditorVisible = true"
+          @show-editor.once="isEditorVisible = true"
       />
 
       <post-editor
