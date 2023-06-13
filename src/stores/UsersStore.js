@@ -57,8 +57,8 @@ export const useUsersStore = defineStore('UsersStore', () => {
   const getAuthUser = async () => user(authUserId);
 
   // eslint-disable-next-line no-shadow
-  const saveUser = async (user) => {
-    const userDocRef = doc(db, 'users', user.id);
+  const saveUser = async ({ user, id }) => {
+    const userDocRef = doc(db, 'users', id);
     await updateDoc(userDocRef, user);
   };
 

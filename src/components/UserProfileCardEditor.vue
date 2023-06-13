@@ -13,8 +13,29 @@ const activeUser = { ...props.user };
 
 const router = useRouter();
 
+const removeUndefinedFields = (obj) => {
+  const cleanedObj = { ...obj };
+  Object.keys(cleanedObj).forEach((key) => {
+    if (cleanedObj[key] === undefined) {
+      delete cleanedObj[key];
+    }
+  });
+  return cleanedObj;
+};
+
 const save = () => {
-  useUsersStore().saveUser(activeUser);
+  const updatedUser = removeUndefinedFields({
+    id: activeUser.id,
+    username: activeUser.username,
+    usernameLower: activeUser.username.toLowerCase(),
+    name: activeUser.name,
+    bio: activeUser.bio,
+    website: activeUser.website,
+    email: activeUser.email,
+    location: activeUser.location,
+  });
+  const usersStore = useUsersStore();
+  usersStore.saveUser({ user: updatedUser, id: activeUser.id });
   router.push({ name: 'Profile' });
 };
 
