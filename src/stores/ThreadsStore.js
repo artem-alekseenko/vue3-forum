@@ -5,7 +5,7 @@ import { useForumsStore } from '@/stores/ForumsStore';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
 import {
-  collection, doc, getDoc, getDocs, query, where, updateDoc, arrayUnion, addDoc,
+  collection, doc, getDoc, getDocs, query, where, updateDoc, arrayUnion, addDoc, serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 
@@ -92,7 +92,7 @@ export const useThreadsStore = defineStore('ThreadsStore', () => {
   };
 
   const prepareThread = ({ title, forumId }) => ({
-    publishedAt: Math.floor(Date.now() / 1000),
+    publishedAt: serverTimestamp(),
     userId: useUsersStore().authUserId,
     title,
     forumId,

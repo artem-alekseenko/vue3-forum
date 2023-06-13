@@ -5,7 +5,7 @@ import { useThreadsStore } from '@/stores/ThreadsStore';
 import { useUsersStore } from '@/stores/UsersStore';
 import { db } from '@/config/firebase';
 import {
-  collection, getDocs, query, where, addDoc, doc, getDoc, updateDoc, orderBy,
+  collection, getDocs, query, where, addDoc, doc, getDoc, updateDoc, orderBy, serverTimestamp,
 } from 'firebase/firestore';
 
 export const usePostsStore = defineStore('PostsStore', () => {
@@ -67,7 +67,7 @@ export const usePostsStore = defineStore('PostsStore', () => {
   };
 
   const preparePost = ({ text, threadId }) => ({
-    publishedAt: Math.floor(Date.now() / 1000),
+    publishedAt: serverTimestamp(),
     userId: useUsersStore().authUserId,
     text,
     threadId,
