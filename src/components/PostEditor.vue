@@ -3,11 +3,18 @@ import { ref } from 'vue';
 
 const emit = defineEmits(['save']);
 
-const text = ref('');
-const save = () => {
-  emit('save', text.value);
+const props = defineProps({
+  post: {
+    type: Object,
+    default: () => ({}),
+  },
+});
 
-  text.value = '';
+const postCopy = ref({ ...props.post });
+const save = () => {
+  emit('save', { post: postCopy.value.text });
+
+  postCopy.value.text = '';
 };
 </script>
 
@@ -15,10 +22,10 @@ const save = () => {
   <div>
     <form @submit.prevent="save">
       <div class="form-group">
-        <textarea v-model="text" name="" id="" cols="30" rows="10" class="form-input"/>
+        <textarea v-model="postCopy.text" name="" id="" cols="30" rows="10" class="form-input"/>
       </div>
       <div class="form-actions">
-        <button class="btn-blue">Submit post</button>
+        <button class="btn-blue">{{ post.id ? 'Update post' : 'Submit post' }}</button>
       </div>
     </form>
   </div>

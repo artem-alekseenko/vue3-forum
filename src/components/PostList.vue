@@ -3,6 +3,7 @@ import { useUsersStore } from '@/stores/UsersStore';
 import {
   onBeforeMount, ref, watch,
 } from 'vue';
+import PostEditor from '@/components/PostEditor.vue';
 
 const props = defineProps({
   posts: {
@@ -11,10 +12,16 @@ const props = defineProps({
   },
 });
 
+const editingPostId = ref(null);
+
 const emit = defineEmits(['showEditor']);
 
 const usersStore = useUsersStore();
 const users = ref({});
+
+const toggleEditMode = (postId) => {
+  editingPostId.value = postId === editingPostId.value ? null : postId;
+};
 
 onBeforeMount(async () => {
   await Promise.all(
@@ -64,12 +71,22 @@ watch(
         </div>
 
         <div class="post-content">
-          <div>
-            <p>
+          <div class="col-full">
+            <PostEditor
+              v-if="editingPostId === post.id"
+              :post="post"
+            />
+            <p v-else>
               {{post.text}}
             </p>
           </div>
-          <a href="#" style="margin-left: auto; padding-left:10px;" class="link-unstyled" title="Make a change">
+          <a
+            href="#"
+            style="margin-left: auto; padding-left:10px;"
+            class="link-unstyled"
+            title="Make a change"
+            @click.prevent="toggleEditMode(post.id)"
+          >
             <fa-icon icon="pencil-alt" />
           </a>
         </div>
@@ -78,8 +95,6 @@ watch(
           <AppDate :timestamp="post.publishedAt" />
         </div>
       </template>
-
     </div>
-
   </div>
 </template>
