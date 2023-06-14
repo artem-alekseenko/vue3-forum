@@ -28,8 +28,8 @@ watchEffect(async () => {
 
 <template>
   <div
-     v-if="!forum || !threads"
-     class="text-center"
+    v-if="!forum || !threads"
+    class="text-center"
   >
     Loading...
   </div>
@@ -38,11 +38,13 @@ watchEffect(async () => {
       <div class="forum-header">
         <div class="forum-details">
           <h1>{{ forum.name }}</h1>
-          <p class="text-lead">{{ forum.description }}</p>
+          <p class="text-lead">
+            {{ forum.description }}
+          </p>
         </div>
         <router-link
-            :to="{name:'ThreadCreate', params: {forumId: forum.id}}"
-            class="btn-green btn-small"
+          :to="{name:'ThreadCreate', params: {forumId: forum.id}}"
+          class="btn-green btn-small"
         >
           Start a thread
         </router-link>
@@ -50,7 +52,7 @@ watchEffect(async () => {
     </div>
 
     <div class="col-full push-top">
-      <ThreadList :threads="threads"/>
+      <ThreadList :threads="threads" />
     </div>
   </template>
 </template>

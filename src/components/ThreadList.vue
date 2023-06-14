@@ -27,41 +27,53 @@ watchEffect(async () => {
 </script>
 
 <template>
-      <div v-if="isLoading">Loading...</div>
-      <div
-          v-if="!isLoading"
-          class="thread-list"
-      >
+  <div v-if="isLoading">
+    Loading...
+  </div>
+  <div
+    v-if="!isLoading"
+    class="thread-list"
+  >
+    <h2 class="list-title">
+      Threads
+    </h2>
 
-          <h2 class="list-title">Threads</h2>
-
-          <div v-for="thread in props.threads" :key="thread.id" class="thread">
-              <div>
-                  <p>
-                    <router-link :to="{name: 'ThreadShow', params: {id: thread.id}}">{{ thread.title }}</router-link>
-                  </p>
-                <p class="text-faded text-xsmall">
-                  By <a href="#">{{ users[thread.userId].name }}</a>, <AppDate :timestamp="thread.publishedAt" />.
-                </p>
-              </div>
-
-              <div class="activity">
-                  <p class="replies-count">
-                    {{ thread.repliesCount }} replies
-                  </p>
-
-                  <img class="avatar-medium" :src="users[thread.userId].avatar" alt="">
-
-                  <div>
-                      <p class="text-xsmall">
-                          <a href="#">{{ users[thread.userId].name }}</a>
-                      </p>
-                      <p class="text-xsmall text-faded">
-                        <AppDate :timestamp="thread.publishedAt" />
-                      </p>
-                  </div>
-              </div>
-          </div>
-
+    <div
+      v-for="thread in props.threads"
+      :key="thread.id"
+      class="thread"
+    >
+      <div>
+        <p>
+          <router-link :to="{name: 'ThreadShow', params: {id: thread.id}}">
+            {{ thread.title }}
+          </router-link>
+        </p>
+        <p class="text-faded text-xsmall">
+          By <a href="#">{{ users[thread.userId].name }}</a>, <AppDate :timestamp="thread.publishedAt" />.
+        </p>
       </div>
+
+      <div class="activity">
+        <p class="replies-count">
+          {{ thread.repliesCount }} replies
+        </p>
+
+        <img
+          class="avatar-medium"
+          :src="users[thread.userId].avatar"
+          alt=""
+        >
+
+        <div>
+          <p class="text-xsmall">
+            <a href="#">{{ users[thread.userId].name }}</a>
+          </p>
+          <p class="text-xsmall text-faded">
+            <AppDate :timestamp="thread.publishedAt" />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

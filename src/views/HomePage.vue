@@ -13,10 +13,12 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <h1 class="push-top col-full">Welcome to the Forum</h1>
+  <h1 class="push-top col-full">
+    Welcome to the Forum
+  </h1>
   <CategoryList
-      v-if="allCategories"
-      :categories="allCategories"
+    v-if="allCategories"
+    :categories="allCategories"
   />
 </template>
 

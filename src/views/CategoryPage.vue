@@ -28,10 +28,12 @@ onBeforeMount(async () => {
 
 <template>
   <template v-if="currentCategory && forums">
-    <h1 class="push-top col-full">{{ currentCategory.name }}</h1>
+    <h1 class="push-top col-full">
+      {{ currentCategory.name }}
+    </h1>
     <ForumList
-        :title="currentCategory.name"
-        :forums="forums"
+      :title="currentCategory.name"
+      :forums="forums"
     />
   </template>
 </template>

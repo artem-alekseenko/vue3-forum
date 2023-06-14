@@ -24,11 +24,11 @@ onBeforeMount(async () => {
   </div>
   <template v-else>
     <ForumList
-        v-for="(category, index) in props.categories"
-        :key="category.id"
-        :forums="forums[index]"
-        :title="category.name"
-        :category-id="category.id"
+      v-for="(category, index) in props.categories"
+      :key="category.id"
+      :forums="forums[index]"
+      :title="category.name"
+      :category-id="category.id"
     />
   </template>
 </template>

@@ -51,17 +51,23 @@ const cancel = () => {
 <template>
   <div
     v-if="!thread && !text"
-    class="text-center">
+    class="text-center"
+  >
     Loading...
   </div>
   <div
-      v-if="thread && text"
-      class="col-full push-top"
+    v-if="thread && text"
+    class="col-full push-top"
   >
     <h1>
       Editing <i>{{ thread.title }}</i>
     </h1>
 
-    <ThreadEditor :title="thread.title" :text="text" @save="save" @cancel="cancel" />
+    <ThreadEditor
+      :title="thread.title"
+      :text="text"
+      @save="save"
+      @cancel="cancel"
+    />
   </div>
 </template>

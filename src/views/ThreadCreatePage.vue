@@ -39,19 +39,23 @@ const cancel = () => {
 
 <template>
   <div
-      v-if="!forum"
-      class="text-center">
+    v-if="!forum"
+    class="text-center"
+  >
     Loading...
   </div>
   <div
-      v-else
-      class="col-full push-top"
+    v-else
+    class="col-full push-top"
   >
     <h1>
       Create new thread in <i>{{ forum.name }}</i>
     </h1>
 
-    <ThreadEditor @save="save" @cancel="cancel"/>
+    <ThreadEditor
+      @save="save"
+      @cancel="cancel"
+    />
   </div>
 </template>
 

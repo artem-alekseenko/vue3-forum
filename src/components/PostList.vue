@@ -52,22 +52,32 @@ watch(
     v-if="Object.keys(users).length"
     class="post-list"
   >
-    <div class="post"
+    <div
       v-for="post in props.posts"
       :key="post.id"
+      class="post"
     >
       <template v-if="post && users[post.userId]">
         <div class="user-info">
-          <a href="#" class="user-name">{{users[post.userId].name}}</a>
+          <a
+            href="#"
+            class="user-name"
+          >{{ users[post.userId].name }}</a>
 
           <a href="#">
             <img
-                class="avatar-large" :src="users[post.userId].avatar" alt="">
+              class="avatar-large"
+              :src="users[post.userId].avatar"
+              alt=""
+            >
           </a>
 
-          <p class="desktop-only text-small">{{users[post.userId].postsCount}} posts</p>
-          <p class="desktop-only text-small">{{users[post.userId].threadsCount}} threads</p>
-
+          <p class="desktop-only text-small">
+            {{ users[post.userId].postsCount }} posts
+          </p>
+          <p class="desktop-only text-small">
+            {{ users[post.userId].threadsCount }} threads
+          </p>
         </div>
 
         <div class="post-content">
@@ -77,7 +87,7 @@ watch(
               :post="post"
             />
             <p v-else>
-              {{post.text}}
+              {{ post.text }}
             </p>
           </div>
           <a

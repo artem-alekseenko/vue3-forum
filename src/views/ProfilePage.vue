@@ -32,32 +32,33 @@ watchEffect(async () => {
 
 <template>
   <div
-      v-if="isLoading"
-      class="text-center">
+    v-if="isLoading"
+    class="text-center"
+  >
     Loading...
   </div>
   <div
-      v-else
-      class="container"
+    v-else
+    class="container"
   >
     <div class="flex-grid">
       <div class="col-3 push-top">
         <UserProfileCard
-            v-if="!props.edit"
-            :user="user"
+          v-if="!props.edit"
+          :user="user"
         />
         <UserProfileCardEditor
-            v-else
-            :user="user"
+          v-else
+          :user="user"
         />
       </div>
 
       <div class="col-7 push-top">
         <div class="profile-header">
-          <span class="text-lead"> {{user.username}} recent activity </span>
+          <span class="text-lead"> {{ user.username }} recent activity </span>
           <a href="#">See only started threads?</a>
         </div>
-        <hr />
+        <hr>
         <PostList :posts="user.posts" />
       </div>
     </div>

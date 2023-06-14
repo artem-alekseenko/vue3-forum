@@ -36,8 +36,8 @@ const addPost = async (text) => {
 
 <template>
   <div
-      v-if="!thread"
-      class="text-center"
+    v-if="!thread"
+    class="text-center"
   >
     Loading...
   </div>
@@ -48,28 +48,33 @@ const addPost = async (text) => {
           {{ thread.title }}
         </h1>
 
-        <router-link :to="{ name: 'ThreadEdit', id: this.id }">
-          <button class="btn-green btn-small">Edit Thread</button>
+        <router-link :to="{ name: 'ThreadEdit', id: id }">
+          <button class="btn-green btn-small">
+            Edit Thread
+          </button>
         </router-link>
       </div>
       <p>
-        By <a href="#" class="link-unstyled">{{thread.author?.name}}</a>, <AppDate :timestamp="thread.publishedAt" />.
+        By <a
+          href="#"
+          class="link-unstyled"
+        >{{ thread.author?.name }}</a>, <AppDate :timestamp="thread.publishedAt" />.
         <span
-            style="float:right; margin-top: 2px;"
-            class="hide-mobile text-faded text-small"
+          style="float:right; margin-top: 2px;"
+          class="hide-mobile text-faded text-small"
         >
-          {{thread.repliesCount}} replies by {{thread.contributorsCount}} contributors
+          {{ thread.repliesCount }} replies by {{ thread.contributorsCount }} contributors
         </span>
       </p>
 
       <post-list
-          :posts="threadPosts"
-          @show-editor.once="isEditorVisible = true"
+        :posts="threadPosts"
+        @show-editor.once="isEditorVisible = true"
       />
 
       <post-editor
-          v-if="isEditorVisible"
-          @save="addPost"
+        v-if="isEditorVisible"
+        @save="addPost"
       />
     </div>
   </template>
