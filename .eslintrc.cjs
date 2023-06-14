@@ -3,7 +3,7 @@ module.exports = {
   root: true,
   extends: [
     'airbnb-base',
-    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
     'eslint:recommended',
   ],
   plugins: ['vue'],
