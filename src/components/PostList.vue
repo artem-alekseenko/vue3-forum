@@ -4,6 +4,9 @@ import {
   onBeforeMount, ref, watch,
 } from 'vue';
 import PostEditor from '@/components/PostEditor.vue';
+import { usePostsStore } from '@/stores/PostsStore';
+
+const emit = defineEmits(['showEditor', 'updatePost']);
 
 const props = defineProps({
   posts: {
@@ -14,13 +17,18 @@ const props = defineProps({
 
 const editingPostId = ref(null);
 
-const emit = defineEmits(['showEditor']);
-
+const postsStore = usePostsStore();
 const usersStore = useUsersStore();
 const users = ref({});
 
 const toggleEditMode = (postId) => {
   editingPostId.value = postId === editingPostId.value ? null : postId;
+};
+
+const handleUpdate = async ({ postText }) => {
+  const updatedPost = await postsStore.updatePost({ id: editingPostId.value, text: postText });
+  emit('updatePost', updatedPost);
+  editingPostId.value = null;
 };
 
 onBeforeMount(async () => {
@@ -44,7 +52,6 @@ watch(
     users.value[authUserId] = await usersStore.user(authUserId);
   },
 );
-
 </script>
 
 <template>
@@ -82,15 +89,17 @@ watch(
 
         <div class="post-content">
           <div class="col-full">
-            <PostEditor
+            <post-editor
               v-if="editingPostId === post.id"
               :post="post"
+              @save="handleUpdate"
             />
             <p v-else>
               {{ post.text }}
             </p>
           </div>
           <a
+            v-if="usersStore.authUserId === post.userId"
             href="#"
             style="margin-left: auto; padding-left:10px;"
             class="link-unstyled"
@@ -102,6 +111,12 @@ watch(
         </div>
 
         <div class="post-date text-faded">
+          <div
+            v-if="post.edited?.at"
+            class="edition-info"
+          >
+            edited
+          </div>
           <AppDate :timestamp="post.publishedAt" />
         </div>
       </template>

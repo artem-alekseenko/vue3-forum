@@ -5,7 +5,16 @@ import { useThreadsStore } from '@/stores/ThreadsStore';
 import { useUsersStore } from '@/stores/UsersStore';
 import { db } from '@/config/firebase';
 import {
-  collection, getDocs, query, where, addDoc, doc, getDoc, updateDoc, orderBy, serverTimestamp,
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
 } from 'firebase/firestore';
 
 export const usePostsStore = defineStore('PostsStore', () => {
@@ -89,7 +98,14 @@ export const usePostsStore = defineStore('PostsStore', () => {
     const postDocRef = doc(db, 'posts', id);
     await updateDoc(postDocRef, {
       text,
+      edited: {
+        at: serverTimestamp(),
+        by: useUsersStore().authUserId,
+        moderated: false,
+      },
     });
+
+    return fetchPost(id);
   };
 
   return {

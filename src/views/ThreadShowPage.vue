@@ -32,6 +32,11 @@ const addPost = async (text) => {
   await postsStore.createPost({ text, threadId: props.id });
   threadPosts.value = await getThreadPosts();
 };
+
+const updatePost = (updatedPost) => {
+  const postIndex = threadPosts.value.findIndex((post) => post.id === updatedPost.id);
+  threadPosts.value.splice(postIndex, 1, updatedPost);
+};
 </script>
 
 <template>
@@ -70,6 +75,7 @@ const addPost = async (text) => {
       <post-list
         :posts="threadPosts"
         @show-editor.once="isEditorVisible = true"
+        @update-post="updatePost"
       />
 
       <post-editor

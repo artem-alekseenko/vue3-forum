@@ -12,7 +12,7 @@ const props = defineProps({
 
 const postCopy = ref({ ...props.post });
 const save = () => {
-  emit('save', { post: postCopy.value.text });
+  emit('save', { postText: postCopy.value.text });
 
   postCopy.value.text = '';
 };
