@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import { FontAwesome } from '@/plugins/FontAwesome';
 
 import App from './App.vue';
 import router from './router';
@@ -10,6 +11,7 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+app.use(FontAwesome);
 
 const components = import.meta.glob('./components/App*.vue', { eager: true });
 Object.keys(components).forEach((path) => {

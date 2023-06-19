@@ -1,31 +1,63 @@
-import { reactive } from 'vue';
 import { defineStore } from 'pinia';
-import sourceData from '@/data.json';
-import { findById, makeAppendChildToParent } from '@/helpers';
+import { db } from '@/config/firebase';
+import {
+  arrayUnion, collection, doc, getDoc, getDocs, query, updateDoc, where,
+} from 'firebase/firestore';
 
 export const useForumsStore = defineStore('ForumsStore', () => {
-  const forums = reactive(sourceData.forums);
+  const fetchForumById = async (id) => {
+    const forumDocRef = doc(db, 'forums', id);
+    const forumDocSnap = await getDoc(forumDocRef);
+    if (forumDocSnap.exists()) {
+      const res = forumDocSnap.data();
+      return {
+        id: forumDocSnap.id,
+        ...res,
+      };
+    }
+    // eslint-disable-next-line no-console
+    console.error(`No forum with id ${id}`);
+    return null;
+  };
 
-  const getForumById = (id) => findById(forums, id);
-
-  const forum = (id) => {
-    // eslint-disable-next-line no-shadow
-    const forum = findById(forums, id);
+  const forum = async (id) => {
+    const forumFromDb = await fetchForumById(id);
 
     return {
-      ...forum,
+      ...forumFromDb,
       get threadIds() {
-        return forum.threads || [];
+        return forumFromDb.threads || [];
       },
     };
   };
 
-  const appendThreadToForum = makeAppendChildToParent({ parent: forums, child: 'threads' });
+  const appendThreadToForum = async ({ forumId, threadId }) => {
+    const forumDocRef = doc(db, 'forums', forumId);
 
-  // eslint-disable-next-line no-shadow
-  const getForumsByCategoryId = (id) => forums.filter((forum) => forum.categoryId === id);
+    await updateDoc(forumDocRef, {
+      threads: arrayUnion(threadId),
+    });
+  };
+
+  const getForumsByCategoryId = async (categoryId) => {
+    const forumsCollection = collection(db, 'forums');
+    const forumsQuery = query(
+      forumsCollection,
+      where('categoryId', '==', categoryId),
+    );
+    const forumsSnapshot = await getDocs(forumsQuery);
+
+    const forumsPromises = forumsSnapshot.docs.map(async (forumDoc) => {
+      const data = forumDoc.data();
+      return {
+        id: forumDoc.id,
+        ...data,
+      };
+    });
+    return Promise.all(forumsPromises);
+  };
 
   return {
-    forums, getForumById, forum, getForumsByCategoryId, appendThreadToForum,
+    forum, getForumsByCategoryId, appendThreadToForum,
   };
 });

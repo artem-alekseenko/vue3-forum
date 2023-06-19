@@ -25,11 +25,10 @@ const forumThreadsWord = (forum) => {
 <template>
   <div class="col-full">
     <div class="forum-list">
-
       <h2 class="list-title">
         <router-link
-            v-if="props.categoryId"
-            :to="{name: 'Category', params: {id: props.categoryId}}"
+          v-if="props.categoryId"
+          :to="{name: 'Category', params: {id: props.categoryId}}"
         >
           {{ props.title }}
         </router-link>
@@ -38,11 +37,15 @@ const forumThreadsWord = (forum) => {
         </span>
       </h2>
 
-      <div class="forum-listing" v-for="forum in props.forums" :key="forum.id">
+      <div
+        v-for="forum in props.forums"
+        :key="forum.id"
+        class="forum-listing"
+      >
         <div class="forum-details">
           <router-link
-              :to="{name: 'Forum', params: {id: forum.id}}"
-              class="text-xlarge"
+            :to="{name: 'Forum', params: {id: forum.id}}"
+            class="text-xlarge"
           >
             {{ forum.name }}
           </router-link>
@@ -56,7 +59,7 @@ const forumThreadsWord = (forum) => {
           </p>
         </div>
 
-        <div class="last-thread"></div>
+        <div class="last-thread" />
       </div>
     </div>
   </div>

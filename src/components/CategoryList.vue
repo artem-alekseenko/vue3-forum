@@ -1,6 +1,7 @@
 <script setup>
 import ForumList from '@/components/ForumList.vue';
 import { useForumsStore } from '@/stores/ForumsStore';
+import { onBeforeMount, ref } from 'vue';
 
 const props = defineProps({
   categories: {
@@ -10,15 +11,24 @@ const props = defineProps({
 });
 
 const forumsStore = useForumsStore();
-const getForumsForCategory = (category) => forumsStore.getForumsByCategoryId(category.id);
+const forums = ref(null);
+onBeforeMount(async () => {
+  const promises = props.categories.map((category) => forumsStore.getForumsByCategoryId(category.id));
+  forums.value = await Promise.all(promises);
+});
 </script>
 
 <template>
-  <ForumList
-      v-for="category in props.categories"
+  <div v-if="!forums">
+    Loading...
+  </div>
+  <template v-else>
+    <ForumList
+      v-for="(category, index) in props.categories"
       :key="category.id"
-      :forums="getForumsForCategory(category)"
+      :forums="forums[index]"
       :title="category.name"
       :category-id="category.id"
-  />
+    />
+  </template>
 </template>

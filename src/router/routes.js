@@ -36,9 +36,11 @@ export const routes = [
     name: 'ThreadShow',
     component: () => import('@/views/ThreadShowPage.vue'),
     props: true,
-    beforeEnter(to, from, next) {
+    async beforeEnter(to, from, next) {
+      // TODO: transfer thread to component or cache it
       const threadsStore = useThreadsStore();
-      const isThreadExists = Boolean(threadsStore.getThreadById(to.params.id));
+      const thread = await threadsStore.thread(to.params.id);
+      const isThreadExists = Boolean(thread);
       if (isThreadExists) {
         return next();
       }

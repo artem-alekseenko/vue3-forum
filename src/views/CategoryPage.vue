@@ -1,7 +1,7 @@
 <script setup>
 import ForumList from '@/components/ForumList.vue';
-import { useCategoriesStore } from '@/stores/CategoriesStore';
-import { useForumsStore } from '@/stores/ForumsStore';
+import { onBeforeMount, ref } from 'vue';
+import { DataProvider } from '@/data-provider/DataProvider';
 
 const props = defineProps({
   id: {
@@ -10,17 +10,30 @@ const props = defineProps({
   },
 });
 
-const categoriesStore = useCategoriesStore();
-const category = categoriesStore.getCategoryById(props.id);
+const currentCategory = ref(null);
+const forums = ref([]);
 
-const forumsStore = useForumsStore();
-const getForumsForCategory = (categoryData) => forumsStore.getForumsByCategoryId(categoryData.id);
+const dataProvider = DataProvider.getInstance();
+
+onBeforeMount(async () => {
+  const [category, forumsData] = await Promise.all([
+    dataProvider.getCategoryById(props.id),
+    dataProvider.getForumsByCategoryId(props.id),
+  ]);
+
+  currentCategory.value = category;
+  forums.value = forumsData;
+});
 </script>
 
 <template>
-  <h1 class="push-top col-full">{{ category.name }}</h1>
-  <ForumList
-      :title="category.name"
-      :forums="getForumsForCategory(category)"
-  />
+  <template v-if="currentCategory && forums">
+    <h1 class="push-top col-full">
+      {{ currentCategory.name }}
+    </h1>
+    <ForumList
+      :title="currentCategory.name"
+      :forums="forums"
+    />
+  </template>
 </template>

@@ -1,22 +1,32 @@
 <script setup>
-import { storeToRefs } from 'pinia';
 import { useUsersStore } from '@/stores/UsersStore';
+import { ref, watchEffect } from 'vue';
 
-const { authUser } = storeToRefs(useUsersStore());
+const authUser = ref(null);
+const usersStore = useUsersStore();
+watchEffect(async () => {
+  authUser.value = await usersStore.authUser;
+});
 </script>
 
 <template>
-  <header class="header" id="header">
-
-    <router-link :to="{name: 'Home'}" class="logo">
+  <header
+    v-if="authUser"
+    id="header"
+    class="header"
+  >
+    <router-link
+      :to="{name: 'Home'}"
+      class="logo"
+    >
       <img src="../assets/svg/vueschool-logo.svg">
     </router-link>
 
     <div class="btn-hamburger">
       <!-- use .btn-humburger-active to open the menu -->
-      <div class="top bar"></div>
-      <div class="middle bar"></div>
-      <div class="bottom bar"></div>
+      <div class="top bar" />
+      <div class="middle bar" />
+      <div class="bottom bar" />
     </div>
 
     <!-- use .navbar-open to open nav -->
@@ -28,20 +38,28 @@ const { authUser } = storeToRefs(useUsersStore());
               class="avatar-small"
               :src="authUser.avatar"
               :alt="`${authUser.name} profile picture`"
-            />
+            >
             <span>
-              {{authUser.name}}
-              <img class="icon-profile" src="../assets/svg/arrow-profile.svg" alt=""/>
+              {{ authUser.name }}
+              <img
+                class="icon-profile"
+                src="../assets/svg/arrow-profile.svg"
+                alt=""
+              >
             </span>
           </router-link>
 
           <!-- dropdown menu -->
           <!-- add class "active-drop" to show the dropdown -->
           <div id="user-dropdown">
-            <div class="triangle-drop"></div>
+            <div class="triangle-drop" />
             <ul class="dropdown-menu">
-              <li class="dropdown-menu-item"><a href="profile.html">View profile</a></li>
-              <li class="dropdown-menu-item"><a href="#">Log out</a></li>
+              <li class="dropdown-menu-item">
+                <a href="profile.html">View profile</a>
+              </li>
+              <li class="dropdown-menu-item">
+                <a href="#">Log out</a>
+              </li>
             </ul>
           </div>
         </li>

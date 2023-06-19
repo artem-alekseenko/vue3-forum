@@ -2,7 +2,7 @@
 import { usePostsStore } from '@/stores/PostsStore';
 import { useThreadsStore } from '@/stores/ThreadsStore';
 import PostList from '@/components/PostList.vue';
-import { computed } from 'vue';
+import { ref, watchEffect } from 'vue';
 import PostEditor from '@/components/PostEditor.vue';
 
 const props = defineProps({
@@ -12,38 +12,76 @@ const props = defineProps({
   },
 });
 
-const threadsStore = useThreadsStore();
-const thread = threadsStore.thread(props.id);
+const isEditorVisible = ref(false);
 
+const thread = ref(null);
+const threadsStore = useThreadsStore();
+const threadPromise = threadsStore.thread(props.id);
+watchEffect(async () => {
+  thread.value = await threadPromise;
+});
+
+const threadPosts = ref([]);
 const postsStore = usePostsStore();
-const threadPosts = computed(() => postsStore.getPostsByThreadId(props.id));
+const getThreadPosts = async () => postsStore.getPostsByThreadId(props.id);
+watchEffect(async () => {
+  threadPosts.value = await getThreadPosts();
+});
 
 const addPost = async (text) => {
   await postsStore.createPost({ text, threadId: props.id });
+  threadPosts.value = await getThreadPosts();
+};
+
+const updatePost = (updatedPost) => {
+  const postIndex = threadPosts.value.findIndex((post) => post.id === updatedPost.id);
+  threadPosts.value.splice(postIndex, 1, updatedPost);
 };
 </script>
 
 <template>
+  <div
+    v-if="!thread"
+    class="text-center"
+  >
+    Loading...
+  </div>
+  <template v-if="thread">
     <div class="col-large push-top">
-      <h1>
-        {{ thread.title }}
-        <router-link :to="{ name: 'ThreadEdit', id: this.id }">
-          <button class="btn-green btn-small">Edit Thread</button>
-        </router-link>
-      </h1>
+      <div>
+        <h1>
+          {{ thread.title }}
+        </h1>
 
+        <router-link :to="{ name: 'ThreadEdit', id: id }">
+          <button class="btn-green btn-small">
+            Edit Thread
+          </button>
+        </router-link>
+      </div>
       <p>
-        By <a href="#" class="link-unstyled">{{thread.author.name}}</a>, <AppDate :timestamp="thread.publishedAt" />.
+        By <a
+          href="#"
+          class="link-unstyled"
+        >{{ thread.author?.name }}</a>, <AppDate :timestamp="thread.publishedAt" />.
         <span
-            style="float:right; margin-top: 2px;"
-            class="hide-mobile text-faded text-small"
+          style="float:right; margin-top: 2px;"
+          class="hide-mobile text-faded text-small"
         >
-          {{thread.repliesCount}} replies by {{thread.contributorsCount}} contributors
+          {{ thread.repliesCount }} replies by {{ thread.contributorsCount }} contributors
         </span>
       </p>
 
-        <post-list :posts="threadPosts" />
+      <post-list
+        :posts="threadPosts"
+        @show-editor.once="isEditorVisible = true"
+        @update-post="updatePost"
+      />
 
-        <post-editor @save="addPost" />
+      <post-editor
+        v-if="isEditorVisible"
+        @save="addPost"
+      />
     </div>
+  </template>
 </template>

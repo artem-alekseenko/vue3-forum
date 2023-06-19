@@ -763,6 +763,11 @@ span.online::before {
     float: left;
 }
 
+.logo img {
+    height: 50px;
+    width: 50px;
+}
+
 .svg-logo {
     height: 62px;
     width: 56px;

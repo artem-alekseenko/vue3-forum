@@ -13,8 +13,29 @@ const activeUser = { ...props.user };
 
 const router = useRouter();
 
+const removeUndefinedFields = (obj) => {
+  const cleanedObj = { ...obj };
+  Object.keys(cleanedObj).forEach((key) => {
+    if (cleanedObj[key] === undefined) {
+      delete cleanedObj[key];
+    }
+  });
+  return cleanedObj;
+};
+
 const save = () => {
-  useUsersStore().setUser(activeUser);
+  const updatedUser = removeUndefinedFields({
+    id: activeUser.id,
+    username: activeUser.username,
+    usernameLower: activeUser.username.toLowerCase(),
+    name: activeUser.name,
+    bio: activeUser.bio,
+    website: activeUser.website,
+    email: activeUser.email,
+    location: activeUser.location,
+  });
+  const usersStore = useUsersStore();
+  usersStore.saveUser({ user: updatedUser, id: activeUser.id });
   router.push({ name: 'Profile' });
 };
 
@@ -29,38 +50,38 @@ const cancel = () => {
     <form @submit.prevent="save">
       <p class="text-center">
         <img
-            :src="props.user.avatar"
-            :alt="`${props.user.name} profile picture`"
-            class="avatar-xlarge img-update"
-        />
+          :src="props.user.avatar"
+          :alt="`${props.user.name} profile picture`"
+          class="avatar-xlarge img-update"
+        >
       </p>
 
       <div class="form-group">
         <input
-            v-model="activeUser.username"
-            type="text"
-            placeholder="Username"
-            class="form-input text-lead text-bold"
-        />
+          v-model="activeUser.username"
+          type="text"
+          placeholder="Username"
+          class="form-input text-lead text-bold"
+        >
       </div>
 
       <div class="form-group">
         <input
-            v-model="activeUser.name"
-            type="text"
-            placeholder="Full Name"
-            class="form-input text-lead"
-        />
+          v-model="activeUser.name"
+          type="text"
+          placeholder="Full Name"
+          class="form-input text-lead"
+        >
       </div>
 
       <div class="form-group">
         <label for="user_bio">Bio</label>
         <textarea
-            v-model="activeUser.bio"
-            class="form-input"
-            id="user_bio"
-            placeholder="Write a few words about yourself."
-        ></textarea>
+          id="user_bio"
+          v-model="activeUser.bio"
+          class="form-input"
+          placeholder="Write a few words about yourself."
+        />
       </div>
 
       <div class="stats">
@@ -68,46 +89,60 @@ const cancel = () => {
         <span>{{ props.user.threadsCount }} threads</span>
       </div>
 
-      <hr />
+      <hr>
 
       <div class="form-group">
-        <label class="form-label" for="user_website">Website</label>
+        <label
+          class="form-label"
+          for="user_website"
+        >Website</label>
         <input
-            v-model="activeUser.website"
-            autocomplete="off"
-            class="form-input"
-            id="user_website"
-        />
+          id="user_website"
+          v-model="activeUser.website"
+          autocomplete="off"
+          class="form-input"
+        >
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="user_email">Email</label>
+        <label
+          class="form-label"
+          for="user_email"
+        >Email</label>
         <input
-            v-model="activeUser.email"
-            autocomplete="off"
-            class="form-input"
-            id="user_email"
-        />
+          id="user_email"
+          v-model="activeUser.email"
+          autocomplete="off"
+          class="form-input"
+        >
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="user_location">Location</label>
+        <label
+          class="form-label"
+          for="user_location"
+        >Location</label>
         <input
-            v-model="activeUser.location"
-            autocomplete="off"
-            class="form-input"
-            id="user_location"
-        />
+          id="user_location"
+          v-model="activeUser.location"
+          autocomplete="off"
+          class="form-input"
+        >
       </div>
 
       <div class="btn-group space-between">
         <button
-            class="btn-ghost"
-            @click="cancel"
+          class="btn-ghost"
+          @click="cancel"
         >
           Cancel
         </button>
-        <button type="submit" class="btn-blue">Save</button>
+        <button
+          type="submit"
+          class="btn-blue"
+        >
+          Save
+        </button>
       </div>
     </form>
   </div>
