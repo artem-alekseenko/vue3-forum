@@ -5,6 +5,7 @@ import {
 } from 'vue';
 import PostEditor from '@/components/PostEditor.vue';
 import { usePostsStore } from '@/stores/PostsStore';
+import { useAsyncDataLoadedStatus } from '@/composables/AsyncDataLoadedStatus';
 
 const emit = defineEmits(['showEditor', 'updatePost']);
 
@@ -16,6 +17,7 @@ const props = defineProps({
 });
 
 const editingPostId = ref(null);
+const { isAsyncDataLoaded, setAsyncDataStatusLoaded } = useAsyncDataLoadedStatus();
 
 const postsStore = usePostsStore();
 const usersStore = useUsersStore();
@@ -39,6 +41,7 @@ onBeforeMount(async () => {
       }
     }),
   );
+  setAsyncDataStatusLoaded();
 });
 
 watch(users.value, () => {
@@ -56,7 +59,7 @@ watch(
 
 <template>
   <div
-    v-if="Object.keys(users).length"
+    v-if="isAsyncDataLoaded"
     class="post-list"
   >
     <div
@@ -64,7 +67,7 @@ watch(
       :key="post.id"
       class="post"
     >
-      <template v-if="post && users[post.userId]">
+      <template v-if="isAsyncDataLoaded">
         <div class="user-info">
           <a
             href="#"

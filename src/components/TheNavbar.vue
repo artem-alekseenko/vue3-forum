@@ -3,6 +3,7 @@ import { useUsersStore } from '@/stores/UsersStore';
 import { ref, watchEffect } from 'vue';
 
 const authUser = ref(null);
+
 const usersStore = useUsersStore();
 watchEffect(async () => {
   authUser.value = await usersStore.authUser;

@@ -1,4 +1,4 @@
-import { computed } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 // eslint-disable-next-line import/no-cycle
 import { usePostsStore } from '@/stores/PostsStore';
@@ -9,6 +9,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 export const useUsersStore = defineStore('UsersStore', () => {
   const authUserId = '7uVPJS9GHoftN58Z2MXCYDqmNAh2';
+  const authUser = ref(null);
 
   const fetchUser = async (id) => {
     const userDocRef = doc(db, 'users', id);
@@ -52,7 +53,7 @@ export const useUsersStore = defineStore('UsersStore', () => {
     };
   };
 
-  const authUser = computed(() => user(authUserId));
+  authUser.value = user(authUserId);
 
   const getAuthUser = async () => user(authUserId);
 

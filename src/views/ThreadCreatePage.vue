@@ -4,6 +4,7 @@ import { useForumsStore } from '@/stores/ForumsStore';
 import { useRouter } from 'vue-router';
 import { useThreadsStore } from '@/stores/ThreadsStore';
 import ThreadEditor from '@/components/ThreadEditor.vue';
+import { useAsyncDataLoadedStatus } from '@/composables/AsyncDataLoadedStatus';
 
 const props = defineProps({
   forumId: {
@@ -13,10 +14,13 @@ const props = defineProps({
 });
 
 const forum = ref(null);
+const { isAsyncDataLoaded, setAsyncDataStatusLoaded } = useAsyncDataLoadedStatus();
+
 const forumsStore = useForumsStore();
 const forumPromise = forumsStore.forum(props.forumId);
 watchEffect(async () => {
   forum.value = await forumPromise;
+  setAsyncDataStatusLoaded();
 });
 
 const router = useRouter();
@@ -39,13 +43,7 @@ const cancel = () => {
 
 <template>
   <div
-    v-if="!forum"
-    class="text-center"
-  >
-    Loading...
-  </div>
-  <div
-    v-else
+    v-if="isAsyncDataLoaded"
     class="col-full push-top"
   >
     <h1>

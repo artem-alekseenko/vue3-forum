@@ -2,6 +2,7 @@
 import ForumList from '@/components/ForumList.vue';
 import { onBeforeMount, ref } from 'vue';
 import { DataProvider } from '@/data-provider/DataProvider';
+import { useAsyncDataLoadedStatus } from '@/composables/AsyncDataLoadedStatus';
 
 const props = defineProps({
   id: {
@@ -12,6 +13,7 @@ const props = defineProps({
 
 const currentCategory = ref(null);
 const forums = ref([]);
+const { isAsyncDataLoaded, setAsyncDataStatusLoaded } = useAsyncDataLoadedStatus();
 
 const dataProvider = DataProvider.getInstance();
 
@@ -23,11 +25,12 @@ onBeforeMount(async () => {
 
   currentCategory.value = category;
   forums.value = forumsData;
+  setAsyncDataStatusLoaded();
 });
 </script>
 
 <template>
-  <template v-if="currentCategory && forums">
+  <template v-if="isAsyncDataLoaded">
     <h1 class="push-top col-full">
       {{ currentCategory.name }}
     </h1>

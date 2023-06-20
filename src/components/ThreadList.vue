@@ -9,6 +9,7 @@ const props = defineProps({
   },
 });
 
+// TODO: use composable AsyncDataLoadedStatus
 const isLoading = ref(true);
 
 const usersStore = useUsersStore();
@@ -27,9 +28,6 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div v-if="isLoading">
-    Loading...
-  </div>
   <div
     v-if="!isLoading"
     class="thread-list"

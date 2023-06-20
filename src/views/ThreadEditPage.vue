@@ -4,6 +4,7 @@ import { useThreadsStore } from '@/stores/ThreadsStore';
 import { ref, watchEffect } from 'vue';
 import { usePostsStore } from '@/stores/PostsStore';
 import { useRouter } from 'vue-router';
+import { useAsyncDataLoadedStatus } from '@/composables/AsyncDataLoadedStatus';
 
 const props = defineProps({
   id: {
@@ -14,8 +15,10 @@ const props = defineProps({
 
 const text = ref('');
 const firstPostId = ref('');
-const postsStore = usePostsStore();
 const thread = ref(null);
+const { isAsyncDataLoaded, setAsyncDataStatusLoaded } = useAsyncDataLoadedStatus();
+
+const postsStore = usePostsStore();
 const threadsStore = useThreadsStore();
 const threadPromise = threadsStore.thread(props.id);
 watchEffect(async () => {
@@ -26,6 +29,7 @@ watchEffect(async () => {
   if (!firstPostId.value) return;
   const post = await postsStore.fetchPost(firstPostId.value);
   text.value = post.text;
+  setAsyncDataStatusLoaded();
 });
 
 const router = useRouter();
@@ -50,13 +54,7 @@ const cancel = () => {
 
 <template>
   <div
-    v-if="!thread && !text"
-    class="text-center"
-  >
-    Loading...
-  </div>
-  <div
-    v-if="thread && text"
+    v-if="isAsyncDataLoaded"
     class="col-full push-top"
   >
     <h1>

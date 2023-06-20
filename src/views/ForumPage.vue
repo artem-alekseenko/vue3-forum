@@ -3,6 +3,7 @@ import ThreadList from '@/components/ThreadList.vue';
 import { useForumsStore } from '@/stores/ForumsStore';
 import { useThreadsStore } from '@/stores/ThreadsStore';
 import { ref, watchEffect } from 'vue';
+import { useAsyncDataLoadedStatus } from '@/composables/AsyncDataLoadedStatus';
 
 const props = defineProps({
   id: {
@@ -12,6 +13,9 @@ const props = defineProps({
 });
 
 const forum = ref(null);
+const threads = ref([]);
+const { isAsyncDataLoaded, setAsyncDataStatusLoaded } = useAsyncDataLoadedStatus();
+
 const forumsStore = useForumsStore();
 const forumPromise = forumsStore.forum(props.id);
 watchEffect(async () => {
@@ -19,21 +23,20 @@ watchEffect(async () => {
 });
 
 const threadsStore = useThreadsStore();
-const threads = ref([]);
 const threadsPromise = threadsStore.fetchThreadsByForumId(props.id);
 watchEffect(async () => {
   threads.value = await threadsPromise;
 });
+
+watchEffect(() => {
+  if (forum.value && threads.value) {
+    setAsyncDataStatusLoaded();
+  }
+});
 </script>
 
 <template>
-  <div
-    v-if="!forum || !threads"
-    class="text-center"
-  >
-    Loading...
-  </div>
-  <template v-if="forum && threads">
+  <template v-if="isAsyncDataLoaded">
     <div class="col-full push-top">
       <div class="forum-header">
         <div class="forum-details">

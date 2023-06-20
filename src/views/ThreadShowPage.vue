@@ -4,6 +4,7 @@ import { useThreadsStore } from '@/stores/ThreadsStore';
 import PostList from '@/components/PostList.vue';
 import { ref, watchEffect } from 'vue';
 import PostEditor from '@/components/PostEditor.vue';
+import { useAsyncDataLoadedStatus } from '@/composables/AsyncDataLoadedStatus';
 
 const props = defineProps({
   id: {
@@ -13,19 +14,26 @@ const props = defineProps({
 });
 
 const isEditorVisible = ref(false);
-
 const thread = ref(null);
+const threadPosts = ref([]);
+const { isAsyncDataLoaded, setAsyncDataStatusLoaded } = useAsyncDataLoadedStatus();
+
 const threadsStore = useThreadsStore();
 const threadPromise = threadsStore.thread(props.id);
 watchEffect(async () => {
   thread.value = await threadPromise;
 });
 
-const threadPosts = ref([]);
 const postsStore = usePostsStore();
 const getThreadPosts = async () => postsStore.getPostsByThreadId(props.id);
 watchEffect(async () => {
   threadPosts.value = await getThreadPosts();
+});
+
+watchEffect(() => {
+  if (thread.value && threadPosts.value.length) {
+    setAsyncDataStatusLoaded();
+  }
 });
 
 const addPost = async (text) => {
@@ -40,13 +48,7 @@ const updatePost = (updatedPost) => {
 </script>
 
 <template>
-  <div
-    v-if="!thread"
-    class="text-center"
-  >
-    Loading...
-  </div>
-  <template v-if="thread">
+  <template v-if="isAsyncDataLoaded">
     <div class="col-large push-top">
       <div>
         <h1>
