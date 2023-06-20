@@ -1,3 +1,12 @@
+<script setup>
+import { onBeforeMount } from 'vue';
+
+const emit = defineEmits(['ready']);
+onBeforeMount(() => {
+  emit('ready');
+});
+</script>
+
 <template>
   <div class="col-full text-center">
     <h1>Not Found</h1>
