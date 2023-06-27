@@ -4,7 +4,6 @@ export const useAsyncDataLoadedStatus = () => {
   const isAsyncDataLoaded = ref(false);
   const instance = getCurrentInstance();
   const setAsyncDataStatusLoaded = () => {
-    console.log('setAsyncDataStatusLoaded');
     isAsyncDataLoaded.value = true;
     instance.emit('ready');
   };
