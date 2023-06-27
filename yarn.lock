@@ -2907,6 +2907,7 @@ __metadata:
     firebase: 9.23.0
     firestore-export-import: 1.3.6
     jsdom: 22.1.0
+    nprogress: 0.2.0
     pinia: 2.1.4
     vite: 4.3.9
     vite-plugin-eslint: 1.8.1
@@ -4320,6 +4321,13 @@ __metadata:
     gauge: ^4.0.3
     set-blocking: ^2.0.0
   checksum: ae238cd264a1c3f22091cdd9e2b106f684297d3c184f1146984ecbe18aaa86343953f26b9520dedd1b1372bc0316905b736c1932d778dbeb1fcf5a1001390e2a
+  languageName: node
+  linkType: hard
+
+"nprogress@npm:0.2.0":
+  version: 0.2.0
+  resolution: "nprogress@npm:0.2.0"
+  checksum: 66b7bec5d563ecf2d1c3d2815e6d5eb74ed815eee8563e0afa63d3f185ab1b9cf2ddd97e1ded263b9995c5019d26d600320e849e50f3747984daa033744619dc
   languageName: node
   linkType: hard
 
