@@ -4,6 +4,7 @@ import UserProfileCard from '@/components/UserProfileCard.vue';
 import UserProfileCardEditor from '@/components/UserProfileCardEditor.vue';
 import { ref, watchEffect } from 'vue';
 import { DataProvider } from '@/data-provider/DataProvider';
+import { useAsyncDataLoadedStatus } from '@/composables/AsyncDataLoadedStatus';
 
 const props = defineProps({
   edit: {
@@ -14,6 +15,8 @@ const props = defineProps({
 
 const isLoading = ref(true);
 const user = ref(null);
+
+const { setAsyncDataStatusLoaded } = useAsyncDataLoadedStatus();
 
 const dataProvider = DataProvider.getInstance();
 
@@ -26,19 +29,14 @@ watchEffect(async () => {
     isLoading.value = true;
     user.value = await dataProvider.getAuthUser();
     isLoading.value = false;
+    setAsyncDataStatusLoaded();
   }
 });
 </script>
 
 <template>
   <div
-    v-if="isLoading"
-    class="text-center"
-  >
-    Loading...
-  </div>
-  <div
-    v-else
+    v-if="!isLoading"
     class="container"
   >
     <div class="flex-grid">
