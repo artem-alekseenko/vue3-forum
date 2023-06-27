@@ -20,11 +20,6 @@ onBeforeMount(() => {
       v-show="isReady"
       @ready="isReady = true"
     />
-    <div
-      v-show="!isReady"
-      class="push-top"
-    >
-      Loading...
-    </div>
+    <AppSpinner v-show="!isReady" />
   </div>
 </template>
