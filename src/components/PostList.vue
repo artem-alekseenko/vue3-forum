@@ -72,7 +72,7 @@ watch(
           <a
             href="#"
             class="user-name"
-          >{{ users[post.userId].name }}</a>
+          >{{ users[post.userId]?.name }}</a>
 
           <a href="#">
             <img

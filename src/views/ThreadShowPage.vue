@@ -36,7 +36,7 @@ watchEffect(() => {
   }
 });
 
-const addPost = async (text) => {
+const addPost = async ({ text }) => {
   await postsStore.createPost({ text, threadId: props.id });
   threadPosts.value = await getThreadPosts();
 };
