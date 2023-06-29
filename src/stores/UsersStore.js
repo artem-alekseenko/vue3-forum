@@ -41,9 +41,6 @@ export const useUsersStore = defineStore('UsersStore', () => {
       get posts() {
         return posts;
       },
-      get postsCount() {
-        return posts.length;
-      },
       get threads() {
         return threads;
       },
@@ -63,7 +60,17 @@ export const useUsersStore = defineStore('UsersStore', () => {
     await updateDoc(userDocRef, user);
   };
 
+  const increaseUserPostsCount = async (userId) => {
+    const userDocRef = doc(db, 'users', userId);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      const userDoc = userDocSnap.data();
+      const postsCount = userDoc.postsCount + 1;
+      await updateDoc(userDocRef, { postsCount });
+    }
+  };
+
   return {
-    fetchUser, user, authUser, saveUser, getAuthUser, authUserId,
+    fetchUser, user, authUser, saveUser, getAuthUser, authUserId, increaseUserPostsCount,
   };
 });

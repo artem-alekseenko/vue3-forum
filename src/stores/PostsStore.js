@@ -92,6 +92,9 @@ export const usePostsStore = defineStore('PostsStore', () => {
     const threadsStore = useThreadsStore();
     await threadsStore.appendPostToThread({ threadId, childId: newPostDocRef.id });
     await threadsStore.appendContributorToThread({ threadId, userId: post.userId });
+
+    const usersStore = useUsersStore();
+    await usersStore.increaseUserPostsCount(post.userId);
   };
 
   const updatePost = async ({ id, text }) => {
