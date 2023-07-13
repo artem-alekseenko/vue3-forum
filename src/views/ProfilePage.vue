@@ -29,8 +29,8 @@ watchEffect(async () => {
     isLoading.value = true;
     user.value = await dataProvider.getAuthUser();
     isLoading.value = false;
-    setAsyncDataStatusLoaded();
   }
+  setAsyncDataStatusLoaded();
 });
 </script>
 
