@@ -42,7 +42,7 @@ defineProps({
       v-if="user.website"
       class="text-large text-center"
     >
-      <i class="fa fa-globe" />
+      <fa-icon icon="globe" />
       <a :href="user.website">{{ user.website }}</a>
     </p>
   </div>
