@@ -3,12 +3,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const config = {
-  apiKey: 'AIzaSyAg58DlC0B_XJAUH5ukgdvC1q0XIZ6M4i0',
-  authDomain: 'vue3-forum-7688c.firebaseapp.com',
-  projectId: 'vue3-forum-7688c',
-  storageBucket: 'vue3-forum-7688c.appspot.com',
-  messagingSenderId: '909807157313',
-  appId: '1:909807157313:web:65a6db13258ebaa0f046c0',
+  apiKey: import.meta.env.VITE_VUE_APP_FIREBASE_API_KEY,
+  projectId: import.meta.env.VITE_VUE_APP_FIREBASE_PROJECT_ID,
+  authDomain: import.meta.env.VITE_VUE_APP_FIREBASE_AUTH_DOMAIN,
+  storageBucket: import.meta.env.VITE_VUE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_VUE_APP_FIREBASE_APP_ID,
 };
 
 export const firebaseApp = initializeApp(config);
