@@ -16,6 +16,7 @@ export class DataProvider {
     this.usersStore = useUsersStore();
   }
 
+  // Categories
   async getAllCategories() {
     await this.categoriesStore.fetchAllCategories();
 
@@ -28,12 +29,20 @@ export class DataProvider {
     return this.categoriesStore.currentCategory;
   }
 
+  // Forums
   async getForumsByCategoryId(categoryId) {
     return this.forumsStore.getForumsByCategoryId(categoryId);
   }
 
+  // Users
   async getAuthUser() {
     return this.usersStore.getAuthUser();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async registerUser(user) {
+    console.log('registerUser', user);
+    return 'registerUser';
   }
 
   static getInstance() {
